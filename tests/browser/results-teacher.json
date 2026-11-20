@@ -1,0 +1,319 @@
+[
+ {
+  "path": "LOGIN teacher",
+  "ok": true,
+  "msg": "",
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/ai-hub.html",
+  "ms": 2380,
+  "text_len": 474,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/ai-hub.html?class=10",
+  "ms": 2412,
+  "text_len": 587,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/answer-sheets.html",
+  "ms": 2457,
+  "text_len": 462,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/answer-sheets.html?class=10",
+  "ms": 2382,
+  "text_len": 528,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/attendance.html",
+  "ms": 2384,
+  "text_len": 432,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/attendance.html?class=10",
+  "ms": 2393,
+  "text_len": 594,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/dashboard.html",
+  "ms": 2386,
+  "text_len": 828,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/discussions.html",
+  "ms": 2369,
+  "text_len": 453,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/discussions.html?class=10",
+  "ms": 2429,
+  "text_len": 453,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/examinations.html",
+  "ms": 2438,
+  "text_len": 468,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/examinations.html?class=10",
+  "ms": 2384,
+  "text_len": 543,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/homework.html",
+  "ms": 2396,
+  "text_len": 439,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/homework.html?class=10",
+  "ms": 2498,
+  "text_len": 478,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/leaderboards.html",
+  "ms": 2444,
+  "text_len": 479,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/leaderboards.html?class=10",
+  "ms": 2420,
+  "text_len": 963,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/lectures.html",
+  "ms": 2432,
+  "text_len": 439,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/lectures.html?class=10",
+  "ms": 2400,
+  "text_len": 478,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/marks.html",
+  "ms": 2375,
+  "text_len": 452,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/marks.html?class=10",
+  "ms": 2387,
+  "text_len": 522,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/meetings.html",
+  "ms": 2389,
+  "text_len": 630,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/notes.html",
+  "ms": 2382,
+  "text_len": 436,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/notes.html?class=10",
+  "ms": 2365,
+  "text_len": 472,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/print.html",
+  "ms": 2367,
+  "text_len": 759,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/print.html?class=10",
+  "ms": 2390,
+  "text_len": 759,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/quizzes.html",
+  "ms": 2388,
+  "text_len": 447,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/quizzes.html?class=10",
+  "ms": 2392,
+  "text_len": 545,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/students.html",
+  "ms": 2401,
+  "text_len": 449,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/students.html?class=10",
+  "ms": 2439,
+  "text_len": 645,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/super15.html",
+  "ms": 2451,
+  "text_len": 525,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/timetable.html",
+  "ms": 2394,
+  "text_len": 432,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/teacher/timetable.html?class=10",
+  "ms": 2384,
+  "text_len": 475,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ }
+]

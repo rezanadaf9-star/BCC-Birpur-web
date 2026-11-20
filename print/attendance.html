@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Attendance notice · BCC</title>
+<link rel="icon" href="../bcc-assets/favicon-32x32.png"><link rel="stylesheet" href="../css/attendance-report.css">
+<style>@media screen{#directorRemark:hover,#parentAction:hover{outline:1px dashed #8a889c;outline-offset:3px;cursor:text}.msg{padding:60px;text-align:center;font-family:Arial,sans-serif}}</style></head>
+<body><div class="toolbar"><button onclick="window.print()">Print / Save as PDF</button><span style="margin-left:12px;font:12px Arial;color:#555">Tip: click the remark or the parent request text to edit it before printing.</span></div>
+<p class="msg" id="loading">Preparing the notice…</p>
+<main class="sheet" id="report" hidden>
+  <header class="masthead"><img class="logo" id="logo" alt="BCC logo"><div class="brand"><h1 id="schoolName"></h1><div class="sub" id="schoolAddress"></div><div class="est" id="established"></div></div><div></div></header>
+  <div class="doc-title"><h2>STUDENT ATTENDANCE NOTICE &amp; REPORT</h2><p>ACADEMIC SESSION <span id="session"></span></p></div>
+  <div class="flag"><strong>ATTENDANCE CONCERN — PARENT / GUARDIAN COPY</strong><span>Report No.: <b id="reportNo"></b></span></div>
+  <section class="section"><div class="section-head">01 &nbsp; STUDENT INFORMATION</div><div class="details" id="studentDetails"></div></section>
+  <section class="section"><div class="section-head">02 &nbsp; ATTENDANCE SUMMARY <span id="periodLabel" style="font-weight:400;letter-spacing:0"></span></div><div class="stats" id="stats"></div>
+    <div class="rate-row"><span>Attendance percentage (Present ÷ Working Days × 100)</span><span class="rate" id="percentage"></span></div></section>
+  <section class="section"><div class="section-head">03 &nbsp; DAILY ATTENDANCE RECORD</div><div class="calendar-wrap"><table class="calendar" aria-label="Monthly attendance calendar"><thead><tr><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th><th>SUN</th></tr></thead><tbody id="calendarBody"></tbody></table>
+    <div class="legend"><span class="key"><i class="swatch p"></i> P — Present</span><span class="key"><i class="swatch a"></i> A — Absent</span><span class="key"><i class="swatch l"></i> L — Approved Leave</span><span class="key"><i class="swatch h"></i> H — Holiday / Centre Closed</span><span class="key">— — Not applicable / future date</span></div></div></section>
+  <section class="section"><div class="section-head">04 &nbsp; DIRECTOR / ADMINISTRATOR'S REMARKS</div><div class="note"><div class="note-title">OFFICIAL ATTENDANCE CONCERN</div><div class="concern-to" id="concernTo"></div><div class="message" id="directorRemark" contenteditable="true"></div><div class="action" id="parentAction" contenteditable="true"></div></div></section>
+  <section class="section"><div class="section-head">05 &nbsp; ACKNOWLEDGEMENT</div><div style="font-size:8pt;line-height:1.45">I / We acknowledge receipt of this attendance notice and have reviewed the attendance record. I / We will discuss the reason for the student's irregular attendance with the centre and support regular attendance going forward.</div>
+    <div class="signatures"><div class="sig">PARENT / GUARDIAN SIGNATURE</div><div class="sig">CLASS TEACHER SIGNATURE</div><div class="sig">DIRECTOR / ADMINISTRATOR</div></div></section>
+  <footer class="footer"><b id="footerSchool"></b><br><span id="footerAddress"></span><br>This report is generated from the BCC's attendance records. Please contact the centre if any entry requires correction.</footer>
+</main>
+<script type="module" src="../js/print/attendance.js"></script></body></html>

@@ -1,0 +1,196 @@
+rules_version = '2';
+// BCC Firestore rules. Default = deny. Role/class come from custom claims set ONLY by Cloud Functions.
+// Writes to people, sessions, marks, fees, attendance, quizzes are never allowed from the client: they go through functions.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- helpers ----------
+    function signedIn() { return request.auth != null; }
+    function role() { return request.auth.token.role; }
+    function isAdmin() { return signedIn() && role() == 'admin'; }
+    function isTeacher() { return signedIn() && role() == 'teacher'; }
+    function isStudent() { return signedIn() && role() == 'student'; }
+    function isStaff() { return isAdmin() || isTeacher(); }
+    function teachesClass(c) { return isTeacher() && (c in request.auth.token.classes); }
+    function mySessionPath() { return /databases/$(database)/documents/users/$(request.auth.uid)/sessions/$(request.auth.token.bsid); }
+    // Billed as one read. Used only on sensitive collections (fees, marks) so a revoked device is cut off immediately.
+    function sessionOk() { return exists(mySessionPath()) && get(mySessionPath()).data.revoked_at == null; }
+
+    // ---------- people ----------
+    match /users/{uid} {
+      allow get: if signedIn() && (request.auth.uid == uid || isAdmin());
+      // teachers may list the students of their own classes (queries must filter on student.class_no)
+      allow list: if isAdmin() || (isTeacher() && resource.data.role == 'student' && resource.data.student.class_no in request.auth.token.classes);
+      allow get: if isTeacher() && resource.data.role == 'student' && resource.data.student.class_no in request.auth.token.classes;
+      allow write: if false;
+
+      // each device session: the owner can read it (to detect revocation and list devices); only functions write
+      match /sessions/{sid} {
+        allow read: if signedIn() && request.auth.uid == uid;
+        allow write: if false;
+      }
+      // the student's own attendance months (written only by the attendance function)
+      match /attendance/{ym} { allow read: if signedIn() && request.auth.uid == uid; allow write: if false; }
+      match /notif_reads/{nid} { allow read: if signedIn() && request.auth.uid == uid; allow create, update: if signedIn() && request.auth.uid == uid && request.resource.data.keys().hasOnly(['notif_created_at', 'read_at']); allow delete: if false; }
+      match /push_tokens/{t} { allow read, write: if false; }
+      match /result_acks/{e} { allow read, write: if false; }
+      match /enrollments/{sid} {
+        allow read: if signedIn() && (request.auth.uid == uid || isAdmin() || isTeacher());
+        allow write: if false;
+      }
+    }
+    // enrollments across all students of a class + session (collection group)
+    match /{path=**}/enrollments/{sid} {
+      allow read: if isAdmin() || (isTeacher() && resource.data.class_no in request.auth.token.classes);
+    }
+
+    // ---------- configuration (admin writes, everyone signed in reads) ----------
+    match /classes/{classNo} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+    match /academic_sessions/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+    match /subjects/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+    match /super15_members/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isStaff());
+      allow update: if isAdmin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['is_active']);
+      allow create, delete: if false;
+    }
+
+    // ---------- exams, marks, results ----------
+    match /exams/{examId} {
+      allow read: if isAdmin() || (isTeacher() && resource.data.class_no in request.auth.token.classes) || (isStudent() && resource.data.class_no == request.auth.token.classNo);
+      allow write: if false;
+      match /marks/{sid} {
+        allow get: if isAdmin() || (isTeacher() && resource.data.class_no in request.auth.token.classes);
+        allow list: if isAdmin() || (isTeacher() && get(/databases/$(database)/documents/exams/$(examId)).data.class_no in request.auth.token.classes);
+        allow write: if false;
+      }
+      match /marks_audit/{aid} {
+        allow list: if isAdmin() || (isTeacher() && get(/databases/$(database)/documents/exams/$(examId)).data.class_no in request.auth.token.classes);
+        allow get: if isAdmin() || (isTeacher() && resource.data.class_no in request.auth.token.classes);
+        allow write: if false;
+      }
+    }
+    // finished report cards: a student reads only their own; parents their linked children
+    match /gradesheets/{id} {
+      allow get: if signedIn() && (resource.data.student.id == request.auth.uid || isAdmin() || (isTeacher() && resource.data.student.class_no in request.auth.token.classes)
+                   || (role() == 'parent' && resource.data.student.id in request.auth.token.children));
+      allow write: if false;
+    }
+    match /exam_leaderboards/{id} { allow read: if isStaff() || (isStudent() && resource.data.class_no == request.auth.token.classNo); allow write: if false; }
+    match /grade_rules/{id}     { allow read: if signedIn(); allow write: if isAdmin(); }
+    match /print_settings/{id}  { allow read: if signedIn(); allow write: if isAdmin(); }
+    match /conduct/{id}         { allow read: if isStaff(); allow write: if isAdmin() && request.resource.data.keys().hasOnly(['student_id','session_id','conduct','public_speaking','homework_completion','effort','art']); }
+
+    // ---------- fees: admin sees everything; a student sees only their own; parents their linked children; teachers nothing ----------
+    function ownsFee() { return signedIn() && (resource.data.student_id == request.auth.uid || (role() == 'parent' && resource.data.student_id in request.auth.token.children)); }
+    match /fee_structures/{id} { allow read: if isAdmin(); allow write: if false; }
+    match /fee_invoices/{id}   { allow read: if (isAdmin() || ownsFee()) && sessionOk(); allow write: if false; }
+    match /fee_payments/{id}   { allow read: if (isAdmin() || ownsFee()) && sessionOk(); allow write: if false; }
+    match /fee_settings/{id}   { allow read: if signedIn(); allow write: if isAdmin(); }
+    match /stats/{id}          { allow read: if isAdmin(); allow write: if false; }
+
+    // ---------- lectures, notes, homework: a student sees only their own class, and only while that feature is switched on ----------
+    function featureOn(k) { return get(/databases/$(database)/documents/classes/$(string(request.auth.token.classNo))).data.features[k] == true; }
+    function classContent(k) { return isAdmin() || (isTeacher() && resource.data.class_no in request.auth.token.classes) || (isStudent() && resource.data.class_no == request.auth.token.classNo && featureOn(k)); }
+    match /lectures/{id} {
+      allow read: if classContent('lectures'); allow write: if false;
+      match /comments/{cid} { allow read: if isAdmin() || (isTeacher() && resource.data.class_no in request.auth.token.classes) || (isStudent() && resource.data.class_no == request.auth.token.classNo); allow write: if false; }
+    }
+    match /notes/{id}    { allow read: if classContent('notes'); allow write: if false; }
+    match /homework/{id} { allow read: if classContent('homework'); allow write: if false; }
+
+    // ---------- answer sheets (private), AI study hub, timetable ----------
+    match /answer_sheets/{id} {
+      allow read: if signedIn() && (resource.data.student_id == request.auth.uid || isAdmin() || (isTeacher() && resource.data.class_no in request.auth.token.classes)
+                   || (role() == 'parent' && resource.data.student_id in request.auth.token.children)) && (!isStudent() || featureOn('answer_sheets'));
+      allow write: if false;
+    }
+    match /notebooklm_resources/{id} {
+      allow read: if isAdmin() || (isTeacher() && resource.data.class_no in request.auth.token.classes) || (isStudent() && resource.data.class_no == request.auth.token.classNo && resource.data.is_active == true && featureOn('ai_study_hub'));
+      allow create: if (isAdmin() || (isTeacher() && request.resource.data.class_no in request.auth.token.classes)) && request.resource.data.created_by == request.auth.uid
+                    && request.resource.data.url.matches('^https?://.*') && request.resource.data.title is string && request.resource.data.title.size() < 200;
+      allow update, delete: if isAdmin();
+    }
+    match /class_timetable/{id} {
+      allow read: if isAdmin() || (isTeacher() && resource.data.class_no in request.auth.token.classes) || (isStudent() && resource.data.class_no == request.auth.token.classNo && featureOn('timetable'));
+      allow write: if isAdmin();
+    }
+
+    // ---------- meetings: staff read the list; students use the myMeetings / joinMeeting functions (the room name is never readable) ----------
+    match /meetings/{id} {
+      allow read: if isStaff(); allow write: if false;
+      match /invitees/{sid}  { allow read: if isStaff() || (signedIn() && request.auth.uid == sid); allow write: if false; }
+      match /participants/{pid} {
+        function m() { return get(/databases/$(database)/documents/meetings/$(id)).data; }
+        allow read: if isStaff() || (isStudent() && ((m().kind == 'super15' && s15Member())
+                    || (m().kind != 'super15' && m().audience == 'students' && exists(/databases/$(database)/documents/meetings/$(id)/invitees/$(request.auth.uid)))
+                    || (m().kind != 'super15' && m().audience == 'all') || (m().kind != 'super15' && m().audience == 'classes' && request.auth.token.classNo in m().target_classes)));
+        allow write: if false;
+      }
+    }
+    match /meeting_rooms/{id} { allow read, write: if false; }
+
+    // ---------- alumni, Super 15, discussions ----------
+    match /alumni/{id} { allow read: if isAdmin() || (isStudent() && resource.data.is_published == true && featureOn('alumni')); allow write: if isAdmin(); }
+    // Super 15 access needs an ACTIVE membership (is_active == true), not just the existence of a membership document.
+    function s15Path() { return /databases/$(database)/documents/super15_members/$(request.auth.uid); }
+    function s15Member() { return exists(s15Path()) && get(s15Path()).data.is_active == true; }
+    match /super15_materials/{id} { allow read: if isStaff() || (isStudent() && s15Member()); allow write: if false; }
+    match /discussion_messages/{id} {
+      allow read: if (resource.data.scope == 'class' && (isAdmin() || (isTeacher() && resource.data.class_no in request.auth.token.classes) || (isStudent() && resource.data.class_no == request.auth.token.classNo && featureOn('group_discussion'))))
+                  || (resource.data.scope == 'super15' && (isStaff() || (isStudent() && s15Member())));
+      allow write: if false;
+    }
+    // lecture comments for the staff discussion page (collection group)
+    match /{path=**}/comments/{cid} { allow read: if isAdmin() || (isTeacher() && resource.data.class_no in request.auth.token.classes); }
+
+    // ---------- quizzes: students see their own class's active quizzes; the answers never leave the server until after submission ----------
+    function staffOfQuiz(qid) { return isAdmin() || (isTeacher() && get(/databases/$(database)/documents/quizzes/$(qid)).data.class_no in request.auth.token.classes); }
+    match /quizzes/{qid} {
+      allow read: if isAdmin() || (isTeacher() && resource.data.class_no in request.auth.token.classes) || (isStudent() && resource.data.class_no == request.auth.token.classNo && resource.data.is_active == true && featureOn('quizzes'));
+      allow write: if false;
+      match /questions/{id} { allow read: if staffOfQuiz(qid); allow write: if false; }
+      match /attempts/{uid} {
+        allow read: if request.auth != null && (uid == request.auth.uid || isAdmin() || (isTeacher() && resource.data.class_no in request.auth.token.classes) || (role() == 'parent' && uid in request.auth.token.children));
+        allow write: if false;
+      }
+    }
+    // a student's own quiz history (collection group "attempts")
+    match /{path=**}/attempts/{uid} { allow read: if request.auth != null && (resource.data.student_id == request.auth.uid || isAdmin() || (isTeacher() && resource.data.class_no in request.auth.token.classes)); }
+    match /quiz_boards/{id}  { allow read: if isStaff() || (isStudent() && resource.data.class_no == request.auth.token.classNo && featureOn('quiz_leaderboard')); allow write: if false; }
+    match /class_boards/{id} { allow read: if isStaff() || (isStudent() && resource.data.class_no == request.auth.token.classNo && featureOn('quiz_leaderboard')); allow write: if false; }
+
+    match /centre_holidays/{d} { allow read: if signedIn(); allow write: if isAdmin() && d.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'); }
+
+    // ---------- public website content ----------
+    match /site_toppers/{id}  { allow read: if resource.data.is_published == true || isAdmin(); allow write: if isAdmin(); }
+    match /site_faculty/{id}  { allow read: if resource.data.is_published == true || isAdmin(); allow write: if isAdmin(); }
+    match /site_hero/{slot}   { allow read: if true; allow write: if isAdmin(); }
+
+    // ---------- notifications: addressed by audience ['all'] / ['class_10']; only functions write ----------
+    match /notifications/{id} {
+      allow read: if isAdmin() || (isTeacher() && !(('user_' + request.auth.uid) in resource.data.audience) && !resource.data.audience[0].matches('user_.*')) || (signedIn() && ('all' in resource.data.audience || ('class_' + string(request.auth.token.classNo)) in resource.data.audience || ('user_' + request.auth.uid) in resource.data.audience));
+      allow write: if false;
+    }
+
+    match /announcements/{id} {
+      allow read: if isAdmin() || (isStudent() && resource.data.is_active == true && (resource.data.target_class == null || resource.data.target_class == request.auth.token.classNo) && featureOn('announcements'));
+      allow write: if false;
+    }
+
+    // ---------- server only ----------
+    match /audit_log/{id}   { allow read: if isAdmin(); allow write: if false; }
+    match /login_ids/{id}   { allow read, write: if false; }
+    match /counters/{id}    { allow read, write: if false; }
+
+    match /{document=**} { allow read, write: if false; }
+  }
+}

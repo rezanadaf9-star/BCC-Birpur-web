@@ -1,0 +1,79 @@
+/* Shared by every printable document. A4 landscape unless a page says otherwise. */
+@page{size:A4 landscape;margin:0}
+*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+html,body{margin:0;background:#e9e8f1;font-family:'Poppins',Arial,sans-serif;color:#111}
+.toolbar{position:sticky;top:0;z-index:10;display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 18px;background:#1b1464;color:#fff;font-size:14px}
+.toolbar button{background:#ffe600;color:#1b1464;font-weight:600;border:0;border-radius:10px;padding:9px 20px;cursor:pointer}
+.page{width:297mm;height:210mm;margin:12px auto;background:#fff;position:relative;overflow:hidden;page-break-after:always;break-after:page;box-shadow:0 4px 18px rgba(0,0,0,.15)}
+.page:last-child{page-break-after:auto;break-after:auto}
+.hand{font-family:'Caveat','Segoe Script',cursive;font-weight:600}
+@media print{html,body{background:#fff}.toolbar{display:none}.page{margin:0;box-shadow:none}}
+.msg{padding:60px;text-align:center;font-family:Arial,sans-serif}
+
+/* ---- report card: grade sheet ---- */
+.gs{--navy:#1b1464;--green:#0b8a3a;--yel:#ffe600;--pale:#fff59d;--red:#c0201f;padding:5mm}
+.gs .frame{position:absolute;inset:4mm;border:.7mm solid var(--red)}
+.gs .wm{position:absolute;left:50%;top:50%;width:150mm;transform:translate(-50%,-50%);opacity:.1;pointer-events:none}
+.gs .inner{position:absolute;inset:7mm;display:flex;flex-direction:column;gap:3mm}
+.gs .title{background:var(--yel);border:.3mm solid var(--navy);color:var(--green);text-align:center;font:700 5.2mm Arial,sans-serif;padding:1.4mm 0}
+.gs .cols{display:grid;grid-template-columns:68% 1fr;gap:4.5mm;flex:1;min-height:0}
+.gs .cols>div:first-child{display:flex;flex-direction:column;min-height:0}
+.gs table{border-collapse:collapse;width:100%;font:600 2.7mm Arial,sans-serif;table-layout:fixed}
+.gs td,.gs th{border:.25mm solid var(--navy);padding:0 1mm;height:var(--rh,6.1mm);text-align:center;overflow:hidden}
+.gs th.nv,.gs td.nv{background:var(--navy);color:var(--yel)}
+.gs th.gr,.gs td.gr{background:var(--green);color:#fff}
+.gs td.lb{background:var(--pale);color:var(--navy);text-align:left;padding-left:1.6mm}
+.gs td.tt{background:var(--yel);color:var(--navy);text-align:left;padding-left:1.6mm}
+.gs td.pl{background:#fffbc2}
+.gs td.v{font-weight:500;color:#111}
+.gs .sub{display:block;font:500 2mm Arial;color:#444}
+.gs .rm{font-size:3.4mm;line-height:1;color:#1b1464}
+.gs .pol{margin-top:1mm}.gs .pol h4{margin:0;text-align:center;color:var(--green);font:700 2.9mm Arial;border-bottom:.4mm solid var(--red);padding-bottom:.6mm}
+.gs .pol p{margin:.7mm 0 1mm;text-align:center;font:italic 2.2mm Arial}
+.gs .scale td{background:var(--pale);font-weight:500;height:5.2mm}.gs .scale td.g{background:var(--red);color:#fff;font-weight:700}
+.gs .sign{display:flex;justify-content:space-between;margin-top:auto;padding:0 0 6mm}
+.gs .sign div{width:62mm;text-align:center;border-top:.3mm solid var(--navy);font:700 2.8mm Arial;color:var(--navy);padding-top:1mm;position:relative}
+.gs .sign img{position:absolute;left:50%;bottom:7mm;height:14mm;transform:translateX(-50%);mix-blend-mode:multiply}
+.gs .side table{margin-bottom:4.5mm}.gs .side td.val{font:700 3.5mm Arial;height:6mm;background:#fff}
+.gs .legend{background:#fffbc2;border:.25mm solid var(--green);text-align:center;font:500 2.6mm/1.25 Arial;padding:1.4mm;margin-bottom:4.5mm}.gs .legend b{color:var(--green)}
+.gs .big{height:17mm!important;font:700 5mm Arial!important;color:var(--navy)}
+.gs .foot{position:absolute;bottom:5.5mm;left:9mm;font:400 2mm Arial;color:#777}
+
+/* ---- report card: cover (fields drawn over the supplied artwork) ---- */
+.cv{background:#ff5f url('../bcc-assets/cover-bg.jpg') center/100% 100% no-repeat}
+.cv .f{position:absolute;color:#0d0a3a;white-space:nowrap;overflow:hidden;line-height:1}
+.cv .ses{left:0;right:0;top:42.0%;text-align:center;font:700 3.3mm Georgia,serif;letter-spacing:.2mm;color:#1b1464}
+.cv .nm{left:32.3%;width:58%;top:78.6%;font-size:9.6mm}
+.cv .rl{left:24%;width:28%;top:85.4%;font-size:9mm}
+.cv .cl{left:76.5%;width:15%;top:85.4%;font-size:9mm}
+
+/* ---- fee receipts (black & white, 4 per page) ---- */
+.rc-page{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;padding:5mm;gap:0}
+.rc{border:.3mm dashed #000;padding:4.5mm 5mm;font:2.9mm Arial,sans-serif;color:#000;position:relative}
+.rc .hd{display:flex;gap:4mm;align-items:center;border-bottom:.35mm solid #000;padding-bottom:2mm}
+.rc .hd img{width:15mm;height:15mm;filter:grayscale(1) contrast(1.1);border-radius:50%}
+.rc .hd div{flex:1;text-align:center}.rc .hd b{font-size:4.6mm;display:block}
+.rc .ttl{text-align:center;font-weight:700;font-size:3.4mm;border-bottom:.5mm solid #000;padding:1.4mm 0;margin-bottom:2.2mm}
+.rc .info{display:grid;grid-template-columns:1.1fr 1fr;gap:1mm 3mm;margin-bottom:2.4mm;line-height:1.55}
+.rc table{width:100%;border-collapse:collapse}.rc th,.rc td{border:.25mm solid #000;padding:1mm 2mm;text-align:center}
+.rc th{text-align:center}.rc td:first-child,.rc th:first-child{text-align:left}.rc tr.tot td{font-weight:700}
+.rc .note{margin-top:2mm;font-size:2.4mm}
+
+/* ---- attendance report (black & white, portrait) ---- */
+.at{width:210mm;height:297mm;padding:12mm 12mm;color:#000;font:3.2mm Arial,sans-serif}
+.at .hd{display:flex;gap:5mm;align-items:center;border-bottom:.5mm solid #000;padding-bottom:3mm}
+.at .hd img{height:18mm}.at h2{margin:0;font-size:5.4mm}.at h3{text-align:center;margin:4mm 0;font-size:4.4mm;letter-spacing:.3mm}
+.at table{border-collapse:collapse;width:100%;margin-top:3mm}.at th,.at td{border:.25mm solid #000;padding:1.2mm;text-align:center}
+.at .info{display:grid;grid-template-columns:1fr 1fr;gap:1.2mm 6mm;line-height:1.5}
+.at .daily td{height:8mm;font-weight:600}
+
+/* Everything fetched from the database on the report card is written in a handwriting font; fixed labels stay printed. */
+.gs .exn,.gs .sbj,.gs td.v,.gs td.val,.gs .foot,.gs .rm{font-family:'Caveat','Segoe Script','Bradley Hand',cursive!important}
+.gs .exn{font-size:4.4mm!important;font-weight:700}
+.gs .sbj{font-size:4.1mm!important;font-weight:700}
+.gs td.v{font-size:4.3mm!important;font-weight:700;color:#14124f!important;letter-spacing:.1mm}
+.gs td.val{font-size:5mm!important;font-weight:700;color:#14124f}
+.gs td.big{font-size:6.2mm!important}
+.gs .sub{font-family:'Caveat','Segoe Script',cursive!important;font-size:3.1mm!important;font-weight:600;color:#14124f}
+.gs .rm{font-size:4.2mm!important;line-height:1.05}
+.gs .foot{font-size:3.2mm!important;color:#555}

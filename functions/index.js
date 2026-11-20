@@ -1,0 +1,41 @@
+'use strict';
+// BCC Cloud Functions entry point. Modules are added as each part of the portal is migrated.
+const sessions = require('./lib/sessions');
+const users = require('./lib/users');
+const notifications = require('./lib/notifications');
+const classes = require('./lib/classes');
+const attendance = require('./lib/attendance');
+const exams = require('./lib/exams');
+const fees = require('./lib/fees');
+const content = require('./lib/content');
+const answers = require('./lib/answers');
+const meetings = require('./lib/meetings');
+const community = require('./lib/community');
+const quizzes = require('./lib/quizzes');
+const dashboard = require('./lib/dashboard');
+
+exports.registerSession = sessions.registerSession;
+exports.logoutSession = sessions.logoutSession;
+exports.revokeMySession = sessions.revokeMySession;
+exports.touchSession = sessions.touchSession;
+
+exports.adminUsers = users.adminUsers;
+exports.updateStudent = users.updateStudent;
+exports.updateTeacher = users.updateTeacher;
+exports.setProfilePhoto = users.setProfilePhoto;
+exports.setMyGoal = users.setMyGoal;
+for (const k of ['markNotificationsSeen','subscribePush','unsubscribePush','saveAnnouncement','setAnnouncementActive','deleteAnnouncement','processAnnouncements','changeMyPassword']) exports[k] = notifications[k];
+exports.createAcademicSession = classes.createAcademicSession;
+exports.deleteSubject = classes.deleteSubject;
+exports.facultySave = classes.facultySave;
+exports.facultyDelete = classes.facultyDelete;
+for (const k of ['saveClassAttendance','getClassAttendance','attendanceSummary','attendanceMonth','lowAttendance','attendanceNotice']) exports[k] = attendance[k];
+exports.currentSessionId = classes.currentSessionId;
+for (const k of ['createExam','saveExamMarks','correctMarks','declareResult','archiveExam','updateExamFullMarks','getGradesheets','promoteClass','pendingResultPopup','ackResultPopup']) exports[k] = exams[k];
+for (const k of ['saveFeeStructure','deleteFeeStructure','generateInvoices','adjustInvoice','recordFeePayment','getFeeReceipts']) exports[k] = fees[k];
+for (const k of ['saveContent','updateContent','deleteContent','lectureSetStatus','lectureReschedule','postLectureComment','processLectureReminders']) exports[k] = content[k];
+exports.saveAnswerSheet = answers.saveAnswerSheet; exports.deleteAnswerSheet = answers.deleteAnswerSheet;
+for (const k of ['createMeeting','meetingSetStatus','meetingReschedule','myMeetings','joinMeeting','leaveMeeting','processMeetingReminders']) exports[k] = meetings[k];
+for (const k of ['postDiscussionMessage','deleteLectureComment','super15AddMembers','saveSuper15Material','deleteSuper15Material']) exports[k] = community[k];
+for (const k of ['createQuiz','updateQuiz','setQuizActive','deleteQuiz','saveQuestion','deleteQuestion','importQuestions','startQuiz','submitQuiz','getAttemptResult','processQuizBoards','studentMonitoring']) exports[k] = quizzes[k];
+exports.dashboardStats = dashboard.dashboardStats; exports.studentDashboard = dashboard.studentDashboard;

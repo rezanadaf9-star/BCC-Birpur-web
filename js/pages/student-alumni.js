@@ -1,0 +1,12 @@
+import { mountShell } from '../shared/shell.js';
+import { rows as qrows, col, query, where, orderBy } from '../core/db.js';
+import { signed } from '../core/storage.js';
+import { CONFIG } from '../config.js';
+import { $, esc, empty, skeleton } from '../shared/ui.js';
+const { content } = await mountShell({ role: 'student', active: 'alumni.html', title: 'Alumni Network', subtitle: 'Where our students go next' });
+content.innerHTML = skeleton(4);
+const data = await qrows(query(col('alumni'), where('is_published', '==', true), orderBy('batch_year', 'desc'), orderBy('name')));
+const urls = {}; await Promise.all(data.filter(a => a.photo_path).map(async a => { urls[a.photo_path] = await signed(a.photo_path, 3600, 'alumni-photos'); }));
+const url = p => urls[p] || '';
+const cats = [...new Set((data || []).map(a => a.category))];
+content.innerHTML = cats.length ? cats.map(c => `<section class="card"><div class="card-head"><h3>${esc(c)}</h3></div><div class="grid g3">${data.filter(a => a.category === c).map(a => `<div class="card" style="box-shadow:none;background:var(--yellow-wash);text-align:center">${a.photo_path ? `<img src="${esc(url(a.photo_path))}" alt="" style="width:92px;height:92px;border-radius:50%;object-fit:cover;margin:0 auto 10px;border:3px solid var(--yellow)">` : `<span class="avatar" style="width:92px;height:92px;font-size:30px;margin:0 auto 10px">${esc(a.name[0])}</span>`}<b>${esc(a.name)}</b><div style="font-size:13px;color:var(--muted)">Batch ${esc(a.batch_year || '')}${a.class_no ? ' · Class ' + a.class_no : ''}</div>${a.current_role ? `<div style="font-size:13.5px;margin-top:4px">${esc(a.current_role)}${a.institution ? ', ' + esc(a.institution) : ''}</div>` : ''}${a.achievement ? `<div class="tag y" style="margin-top:6px">${esc(a.achievement)}</div>` : ''}${a.message ? `<p style="font-size:13px;margin-top:8px;font-style:italic">“${esc(a.message)}”</p>` : ''}</div>`).join('')}</div></section>`).join('') : `<section class="card">${empty('fa-user-graduate', 'Alumni stories will appear here.')}</section>`;

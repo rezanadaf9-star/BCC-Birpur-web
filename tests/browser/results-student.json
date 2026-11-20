@@ -1,0 +1,343 @@
+[
+ {
+  "path": "LOGIN student",
+  "ok": true,
+  "msg": "",
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/ai-hub.html",
+  "ms": 2372,
+  "text_len": 817,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/ai-hub.html?class=10",
+  "ms": 2390,
+  "text_len": 817,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/ai-tutor.html",
+  "ms": 2400,
+  "text_len": 937,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/alumni.html",
+  "ms": 2375,
+  "text_len": 706,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/announcements.html",
+  "ms": 2393,
+  "text_len": 760,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/answer-sheets.html",
+  "ms": 2374,
+  "text_len": 721,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/answer-sheets.html?class=10",
+  "ms": 2373,
+  "text_len": 721,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/attendance.html",
+  "ms": 2401,
+  "text_len": 843,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/attendance.html?class=10",
+  "ms": 2392,
+  "text_len": 843,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/board-results.html",
+  "ms": 2372,
+  "text_len": 765,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/dashboard.html",
+  "ms": 2406,
+  "text_len": 1365,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/discussion.html",
+  "ms": 2374,
+  "text_len": 763,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/faculty.html",
+  "ms": 2451,
+  "text_len": 714,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/fees.html",
+  "ms": 2410,
+  "text_len": 973,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/homework.html",
+  "ms": 2373,
+  "text_len": 772,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/homework.html?class=10",
+  "ms": 2388,
+  "text_len": 772,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/leaderboard.html",
+  "ms": 2352,
+  "text_len": 743,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/lectures.html",
+  "ms": 2413,
+  "text_len": 821,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/lectures.html?class=10",
+  "ms": 2391,
+  "text_len": 821,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/marks.html",
+  "ms": 2380,
+  "text_len": 975,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/marks.html?class=10",
+  "ms": 2407,
+  "text_len": 975,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/motivational.html",
+  "ms": 2376,
+  "text_len": 760,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/notes.html",
+  "ms": 2412,
+  "text_len": 749,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/notes.html?class=10",
+  "ms": 2376,
+  "text_len": 749,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/profile.html",
+  "ms": 2368,
+  "text_len": 1031,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/ptm.html",
+  "ms": 2415,
+  "text_len": 760,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/quiz.html",
+  "ms": 2391,
+  "text_len": 63,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [
+   "CONSOLE: Failed to load resource: the server responded with a status of 400 (Bad Request)"
+  ],
+  "backend_errors": [
+   "/call -> NOT_FOUND: Quiz not found."
+  ]
+ },
+ {
+  "path": "/student/quizzes.html",
+  "ms": 2373,
+  "text_len": 759,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/quizzes.html?class=10",
+  "ms": 2372,
+  "text_len": 759,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/settings.html",
+  "ms": 2387,
+  "text_len": 1046,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/super15.html",
+  "ms": 2390,
+  "text_len": 760,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/timetable.html",
+  "ms": 2380,
+  "text_len": 717,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/student/timetable.html?class=10",
+  "ms": 2377,
+  "text_len": 717,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ }
+]

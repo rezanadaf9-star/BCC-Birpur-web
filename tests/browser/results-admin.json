@@ -1,0 +1,399 @@
+[
+ {
+  "path": "LOGIN admin",
+  "ok": true,
+  "msg": "",
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/admission.html",
+  "ms": 2424,
+  "text_len": 1129,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/ai-hub.html",
+  "ms": 2422,
+  "text_len": 579,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/ai-hub.html?class=10",
+  "ms": 2399,
+  "text_len": 685,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/alumni.html",
+  "ms": 2365,
+  "text_len": 629,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/announcements.html",
+  "ms": 2378,
+  "text_len": 606,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/answer-sheets.html",
+  "ms": 2433,
+  "text_len": 567,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/answer-sheets.html?class=10",
+  "ms": 2387,
+  "text_len": 614,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/attendance.html",
+  "ms": 2381,
+  "text_len": 537,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/attendance.html?class=10",
+  "ms": 2396,
+  "text_len": 680,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/classes.html",
+  "ms": 2391,
+  "text_len": 1170,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/dashboard.html",
+  "ms": 2395,
+  "text_len": 998,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/discussions.html",
+  "ms": 2423,
+  "text_len": 539,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/discussions.html?class=10",
+  "ms": 2365,
+  "text_len": 539,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/examinations.html",
+  "ms": 2403,
+  "text_len": 573,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/examinations.html?class=10",
+  "ms": 2403,
+  "text_len": 629,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/fees.html",
+  "ms": 2372,
+  "text_len": 585,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/holidays.html",
+  "ms": 2356,
+  "text_len": 614,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/homework.html",
+  "ms": 2407,
+  "text_len": 548,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/homework.html?class=10",
+  "ms": 2390,
+  "text_len": 568,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/leaderboards.html",
+  "ms": 2401,
+  "text_len": 584,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/leaderboards.html?class=10",
+  "ms": 2425,
+  "text_len": 1049,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/lectures.html",
+  "ms": 2411,
+  "text_len": 548,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/lectures.html?class=10",
+  "ms": 2387,
+  "text_len": 568,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/marks.html",
+  "ms": 2408,
+  "text_len": 557,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/marks.html?class=10",
+  "ms": 2402,
+  "text_len": 608,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/meetings.html",
+  "ms": 2426,
+  "text_len": 744,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/notes.html",
+  "ms": 2389,
+  "text_len": 545,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/notes.html?class=10",
+  "ms": 2453,
+  "text_len": 562,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/print.html",
+  "ms": 2358,
+  "text_len": 867,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/print.html?class=10",
+  "ms": 2375,
+  "text_len": 867,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/quizzes.html",
+  "ms": 2372,
+  "text_len": 552,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/quizzes.html?class=10",
+  "ms": 2375,
+  "text_len": 631,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/students.html",
+  "ms": 2366,
+  "text_len": 554,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/students.html?class=10",
+  "ms": 2398,
+  "text_len": 731,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/super15.html",
+  "ms": 2419,
+  "text_len": 641,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/teachers.html",
+  "ms": 2372,
+  "text_len": 850,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/timetable.html",
+  "ms": 2368,
+  "text_len": 537,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/timetable.html?class=10",
+  "ms": 2372,
+  "text_len": 584,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ },
+ {
+  "path": "/admin/toppers.html",
+  "ms": 2353,
+  "text_len": 694,
+  "flags": [],
+  "overflow_desktop": 0,
+  "overflow_mobile": 0,
+  "errors": [],
+  "backend_errors": []
+ }
+]

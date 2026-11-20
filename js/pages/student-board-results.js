@@ -1,0 +1,11 @@
+import { mountShell } from '../shared/shell.js';
+import { rows as qrows, col, query, where, orderBy } from '../core/db.js';
+import { CONFIG } from '../config.js';
+import { esc, empty, skeleton } from '../shared/ui.js';
+const { content } = await mountShell({ role: 'student', active: 'board-results.html', title: 'Board Results', subtitle: 'Our toppers, ranked by marks' });
+content.innerHTML = skeleton(4);
+const data = await qrows(query(col('site_toppers'), where('is_published', '==', true), orderBy('marks', 'desc')));
+const url = p => !p ? '' : /^(https?:|assets\/)/.test(p) ? '../' + p : `https://firebasestorage.googleapis.com/v0/b/${CONFIG.FIREBASE.storageBucket}/o/${encodeURIComponent('site-public/' + p)}?alt=media`;
+const block = (lv, name) => { const rows = (data || []).filter(t => t.level === lv); const years = [...new Set(rows.map(t => t.batch_year))].sort().reverse();
+  return `<section class="card"><div class="card-head"><h3>${name}</h3></div>${years.map(y => `<h4 style="margin:12px 0 8px">Batch ${esc(y || '')}</h4><div class="grid g4">${rows.filter(t => t.batch_year === y).map((t, i) => `<div class="card" style="box-shadow:none;background:var(--yellow-wash);text-align:center"><span class="tag y">#${i + 1}</span>${t.photo_path ? `<img src="${esc(url(t.photo_path))}" alt="" style="width:84px;height:84px;border-radius:50%;object-fit:cover;margin:8px auto;border:3px solid var(--yellow)">` : ''}<b style="display:block">${esc(t.name)}</b><div>${t.marks} / ${t.full_marks}</div><small style="color:var(--muted)">${esc(t.school_note || '')}</small></div>`).join('')}</div>`).join('') || empty('fa-trophy', 'No results yet.')}</section>`; };
+content.innerHTML = block('matric', 'Matric (Class 10)') + block('intermediate', 'Intermediate (Class 12)');

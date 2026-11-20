@@ -1,0 +1,53 @@
+rules_version = '2';
+// Only small images live in Firebase Storage (profile photos, answer-sheet scans, fee QR, signatures, public site images).
+// Lecture videos, notes and homework stay on YouTube / Google Drive / OneDrive.
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() { return request.auth != null; }
+    function isAdmin() { return signedIn() && request.auth.token.role == 'admin'; }
+    function isImage() { return request.resource.contentType.matches('image/.*') && request.resource.size < 1 * 1024 * 1024; }
+
+    // profile photos: "<uid>.jpg". Owner or admin writes; owner, admin and teachers read; classmates see them via signed URLs later (module 7)
+    match /student-photos/{file} {
+      allow read: if signedIn();
+      allow write: if signedIn() && isImage() && (isAdmin() || file == request.auth.uid + '.jpg');
+    }
+    // public website images (hero, toppers, faculty): anyone reads, admin writes
+    match /site-public/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin() && isImage();
+    }
+    function isDoc() { return request.resource.contentType in ['application/pdf', 'image/jpeg', 'image/png'] && request.resource.size < 15 * 1024 * 1024; }
+    // fee QR code: students and parents see it, only the admin changes it
+    match /bcc-content/fees/{file} { allow read: if signedIn(); allow write: if isAdmin() && isImage(); }
+
+    // notes and homework files: bcc-content/{notes|homework}/{classNo}/{file}. Read = that class's students and staff. Upload = staff of that class. Delete/replace = server only.
+    match /bcc-content/{type}/{classNo}/{file} {
+      allow read: if signedIn() && type in ['notes', 'homework'] && (isAdmin()
+        || (request.auth.token.role == 'teacher' && int(classNo) in request.auth.token.classes)
+        || (request.auth.token.role == 'student' && string(request.auth.token.classNo) == classNo));
+      allow create: if signedIn() && type in ['notes', 'homework'] && isDoc() && (isAdmin() || (request.auth.token.role == 'teacher' && int(classNo) in request.auth.token.classes));
+      allow update, delete: if false;
+    }
+
+    // answer sheets: answer-sheets/{studentId}/{file}. Read = that student, their linked parent, admin, or the teacher of the student's class. Upload = admin / teacher of that class.
+    function stuClass(sid) { return firestore.get(/databases/(default)/documents/users/$(sid)).data.student.class_no; }
+    match /answer-sheets/{studentId}/{file} {
+      allow read: if signedIn() && (request.auth.uid == studentId || isAdmin() || (request.auth.token.role == 'parent' && studentId in request.auth.token.children)
+                   || (request.auth.token.role == 'teacher' && stuClass(studentId) in request.auth.token.classes));
+      allow create: if signedIn() && isDoc() && (isAdmin() || (request.auth.token.role == 'teacher' && stuClass(studentId) in request.auth.token.classes));
+      allow update, delete: if false;
+    }
+
+    // Super 15 materials: members and staff read; staff upload; server deletes
+    match /bcc-content/super15/{file} {
+      allow read: if signedIn() && (isAdmin() || request.auth.token.role == 'teacher' || (firestore.exists(/databases/(default)/documents/super15_members/$(request.auth.uid)) && firestore.get(/databases/(default)/documents/super15_members/$(request.auth.uid)).data.is_active == true));
+      allow create: if signedIn() && request.resource.size < 15 * 1024 * 1024 && (isAdmin() || request.auth.token.role == 'teacher');
+      allow update, delete: if false;
+    }
+    // alumni photos: only signed-in users see them; admin manages
+    match /alumni-photos/{allPaths=**} { allow read: if signedIn(); allow write: if isAdmin() && isImage(); }
+
+    match /{allPaths=**} { allow read, write: if false; }
+  }
+}

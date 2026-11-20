@@ -1,0 +1,18 @@
+import { mountShell } from '../shared/shell.js';
+import { rows as qrows, one, col, query, where, orderBy } from '../core/db.js';
+import { $, $$, esc, empty, skeleton, initials } from '../shared/ui.js';
+const { me, content } = await mountShell({ role: 'student', active: 'quizzes.html', title: 'Quiz Leaderboard', subtitle: 'Latest quiz and cumulative ranking' });
+const P = new URLSearchParams(location.search); let mode = P.get('quiz') ? 'quiz' : 'cum';
+const qz = await qrows(query(col('quizzes'), where('class_no', '==', me.student.class_no), where('is_active', '==', true), orderBy('created_at', 'desc'))); let qid = P.get('quiz') || qz?.[0]?.id;
+content.innerHTML = `<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn sm" data-m="quiz">Latest quiz</button><button class="btn sm ghost" data-m="cum">Cumulative</button><select class="input" id="qs" style="width:auto;min-height:38px">${(qz || []).map(q => `<option value="${q.id}" ${q.id === qid ? 'selected' : ''}>${esc(q.title)}</option>`).join('')}</select></div><section class="card" id="v">${skeleton(4)}</section>`;
+const num = v => Math.round(Number(v) * 100) / 100;
+async function draw() {
+  $$('[data-m]').forEach(b => b.classList.toggle('ghost', b.dataset.m !== mode)); $('#qs').classList.toggle('hidden', mode !== 'quiz');
+  let data = [], error = null; try { const b = mode === 'quiz' ? (qid ? await one('quiz_boards', qid) : null) : await one('class_boards', String(me.student.class_no)); data = b?.rows || []; } catch (e) { error = e; }
+  const L = (data || []).map(x => ({ id: x.student_id, name: x.full_name, rank: Number(x.rank), score: mode === 'quiz' ? `${num(x.score)} / ${num(x.total_marks)}` : `${num(x.total_score)} / ${num(x.total_marks)}`, pct: mode === 'quiz' ? (x.total_marks ? x.score * 100 / x.total_marks : 0) : x.percentage, me: x.student_id === me.id }));
+  if (error || !L.length) return $('#v').innerHTML = empty('fa-trophy', 'No results yet for this selection.');
+  const av = x => `<span class="avatar" style="width:${x._s}px;height:${x._s}px">${esc(initials(x.name))}</span>`, pod = [[L[1], 2, 'var(--silver)', 110], [L[0], 1, 'var(--gold)', 150], [L[2], 3, 'var(--bronze)', 85]];
+  const top = L.slice(0, 10), mine = L.find(x => x.me), below = mine && !top.includes(mine);
+  $('#v').innerHTML = `<div style="display:flex;align-items:flex-end;justify-content:center;gap:14px;margin:10px 0 20px">${pod.map(([x, r, col, h]) => x ? `<div style="text-align:center;width:30%"><div style="display:flex;justify-content:center">${av({ ...x, _s: r === 1 ? 80 : 60 })}</div><b style="display:block;margin-top:6px;font-size:13.5px">${esc(x.name)}${x.me ? ' <span class="tag y">YOU</span>' : ''}</b><small>${x.score} · ${num(x.pct)}%</small><div style="height:${h}px;background:${col};border-radius:12px 12px 0 0;margin-top:8px;display:grid;place-items:center;font-size:28px;font-weight:700;color:#fff">${r}</div></div>` : '<div style="width:30%"></div>').join('')}</div>
+  <div class="table-wrap"><table class="t"><thead><tr><th>Rank</th><th>Student</th><th>Score</th><th>%</th></tr></thead><tbody>${[...top, ...(below ? [mine] : [])].map(x => `${x === mine && below ? '<tr><td colspan="4" style="text-align:center;color:var(--muted)">⋮</td></tr>' : ''}<tr style="${x.me ? 'background:var(--yellow-wash);font-weight:600' : ''}"><td>#${x.rank}</td><td>${esc(x.name)} ${x.me ? '<span class="tag y">YOU</span>' : ''}</td><td>${x.score}</td><td>${num(x.pct)}%</td></tr>`).join('')}</tbody></table></div>`; }
+$$('[data-m]').forEach(b => b.onclick = () => { mode = b.dataset.m; draw(); }); $('#qs').onchange = e => { qid = e.target.value; draw(); }; draw();

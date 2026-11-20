@@ -1,0 +1,98 @@
+[
+ {
+  "feature": "Login",
+  "scenario": "Wrong password",
+  "expected": "message \"Incorrect ID or password\", stays on login page",
+  "actual": "Incorrect ID or password.",
+  "pass": true,
+  "ms": 16328
+ },
+ {
+  "feature": "Login",
+  "scenario": "Student ID on the Teacher card",
+  "expected": "refused with a clear message",
+  "actual": "Teachers sign in with their email address.",
+  "pass": true,
+  "ms": 16291
+ },
+ {
+  "feature": "Login",
+  "scenario": "Student signs in with Student ID",
+  "expected": "lands on student dashboard; dashboard shows the student name",
+  "actual": "as expected",
+  "pass": true,
+  "ms": 3176
+ },
+ {
+  "feature": "Device sessions",
+  "scenario": "Three browsers for one student (limit 2)",
+  "expected": "first browser signed out within seconds",
+  "actual": "oldest browser sent to the login page with #session-ended; the other two stay signed in",
+  "pass": true,
+  "ms": 11630
+ },
+ {
+  "feature": "Quiz anti-cheat",
+  "scenario": "Desktop: page hidden (tab switched)",
+  "expected": "submitted at once with reason tab-switch",
+  "actual": "auto-submitted (tab-switch), score 0/3, result screen shown",
+  "pass": true,
+  "ms": 3187
+ },
+ {
+  "feature": "Quiz anti-cheat",
+  "scenario": "Phone: 5 s away ignored, 30 s away submits on return (D5)",
+  "expected": "matches the approved rule",
+  "actual": "5 s away ignored; 30 s away submitted on return (reason tab-switch-phone); hidden_count=2",
+  "pass": true,
+  "ms": 4077
+ },
+ {
+  "feature": "Quizzes",
+  "scenario": "Answer, submit, leaderboard",
+  "expected": "server-scored attempt and leaderboard row",
+  "actual": "score 1/3 saved by the server; student shown on the leaderboard",
+  "pass": true,
+  "ms": 6096
+ },
+ {
+  "feature": "Quizzes",
+  "scenario": "Open the same quiz again",
+  "expected": "refused",
+  "actual": "second start refused: \"You have already submitted this quiz.\"",
+  "pass": true,
+  "ms": 1632
+ },
+ {
+  "feature": "Cache isolation",
+  "scenario": "Switch between two students on one device",
+  "expected": "no cached data of the previous student remains",
+  "actual": "two accounts on one device; after each switch the other student's cached data is gone and the right student is shown",
+  "pass": true,
+  "ms": 7363
+ },
+ {
+  "feature": "Admission",
+  "scenario": "Admin admits a student through the real form",
+  "expected": "Student ID and password shown",
+  "actual": "admission created 26BCC1004; credentials shown to the admin",
+  "pass": true,
+  "ms": 3217
+ },
+ {
+  "feature": "Lectures",
+  "scenario": "Add a Google Drive lecture through the real form",
+  "expected": "saved and listed",
+  "actual": "form switches YouTube/Drive fields correctly; lecture saved and listed",
+  "pass": true,
+  "ms": 3196
+ },
+ {
+  "feature": "Notes",
+  "scenario": "Upload a PDF note",
+  "expected": "file stored, metadata saved, listed",
+  "actual": "PDF uploaded to storage, checked by the server, note listed",
+  "pass": true,
+  "ms": 3514
+ }
+]

@@ -1,0 +1,959 @@
+
+    :root {
+      --ink: #111;
+      --muted: #555;
+      --line: #222;
+      --soft: #ededed;
+      --pale: #f6f6f6
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: #e9e9e9;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif
+    }
+
+    .toolbar {
+      max-width: 210mm;
+      margin: 14px auto 10px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px
+    }
+
+    button {
+      border: 1px solid #111;
+      background: #111;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 5px;
+      font-weight: 700;
+      cursor: pointer
+    }
+
+    .sheet {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto 18px;
+      background: #fff;
+      padding: 12mm 13mm 10mm;
+      box-shadow: 0 4px 22px #0002
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: 27mm 1fr 27mm;
+      align-items: center;
+      border-bottom: 2px solid #111;
+      padding-bottom: 5mm
+    }
+
+    .logo {
+      width: 25mm;
+      height: 25mm;
+      object-fit: contain;
+      filter: grayscale(1)
+    }
+
+    .brand {
+      text-align: center
+    }
+
+    .brand h1 {
+      font-size: 17pt;
+      letter-spacing: .7px;
+      margin: 0 0 2mm;
+      font-weight: 800
+    }
+
+    .brand .sub {
+      font-size: 8.5pt;
+      color: #333;
+      line-height: 1.45
+    }
+
+    .brand .est {
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-top: 1mm
+    }
+
+    .doc-title {
+      text-align: center;
+      margin: 5mm 0 4mm
+    }
+
+    .doc-title h2 {
+      font-size: 15pt;
+      letter-spacing: 1.2px;
+      margin: 0 0 1mm
+    }
+
+    .doc-title p {
+      font-size: 8pt;
+      color: #555;
+      margin: 0;
+      letter-spacing: .6px
+    }
+
+    .flag {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #222;
+      padding: 2.5mm 3mm;
+      margin-bottom: 4mm;
+      font-size: 8pt
+    }
+
+    .flag strong {
+      font-size: 8.5pt;
+      letter-spacing: .5px
+    }
+
+    .section {
+      margin-top: 4mm
+    }
+
+    .section-head {
+      font-size: 9pt;
+      font-weight: 800;
+      letter-spacing: .7px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 1.5mm;
+      margin-bottom: 2.5mm
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2.5mm 5mm
+    }
+
+    .field {
+      font-size: 8pt;
+      min-height: 9mm;
+      border-bottom: 1px dotted #999;
+      padding-bottom: 1mm
+    }
+
+    .field label {
+      display: block;
+      color: #555;
+      font-size: 7pt;
+      margin-bottom: 1mm;
+      text-transform: uppercase;
+      letter-spacing: .4px
+    }
+
+    .field b {
+      font-size: 9pt;
+      font-weight: 700
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border: 1px solid #222
+    }
+
+    .stat {
+      text-align: center;
+      padding: 3mm 1mm;
+      border-right: 1px solid #999
+    }
+
+    .stat:last-child {
+      border: 0
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 17pt;
+      line-height: 1.1
+    }
+
+    .stat span {
+      display: block;
+      font-size: 7pt;
+      color: #444;
+      margin-top: 1.5mm;
+      text-transform: uppercase;
+      letter-spacing: .3px
+    }
+
+    .rate-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2mm;
+      font-size: 8pt
+    }
+
+    .rate {
+      font-size: 13pt;
+      font-weight: 800;
+      border: 1.5px solid #111;
+      padding: 1.5mm 4mm
+    }
+
+    .calendar-wrap {
+      border: 1px solid #222;
+      padding: 3mm
+    }
+
+    .calendar {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 1.2mm;
+      table-layout: fixed
+    }
+
+    .calendar th {
+      background: #222;
+      color: #fff;
+      font-size: 7pt;
+      padding: 2mm 0;
+      font-weight: 700
+    }
+
+    .calendar td {
+      height: 9mm;
+      text-align: center;
+      border: 1px solid #bbb;
+      font-size: 8pt;
+      font-weight: 700;
+      position: relative
+    }
+
+    .calendar td.empty {
+      border: 0
+    }
+
+    .calendar td.present {
+      background: #fff
+    }
+
+    .calendar td.absent {
+      background: #dedede;
+      border: 1.5px solid #111
+    }
+
+    .calendar td.leave {
+      background: #f1f1f1;
+      border: 1px dashed #555
+    }
+
+    .calendar td.holiday {
+      background: #aaa;
+      color: #111
+    }
+
+    .calendar td.unmarked {
+      background: #fff;
+      color: #999;
+      border: 1px dotted #ccc
+    }
+
+    .legend {
+      display: flex;
+      gap: 5mm;
+      flex-wrap: wrap;
+      font-size: 7.5pt;
+      margin-top: 2mm
+    }
+
+    .key {
+      display: inline-flex;
+      align-items: center;
+      gap: 1.5mm
+    }
+
+    .swatch {
+      width: 4mm;
+      height: 4mm;
+      border: 1px solid #333;
+      display: inline-block
+    }
+
+    .swatch.p {
+      background: #fff
+    }
+
+    .swatch.a {
+      background: #dedede;
+      border: 1.5px solid #111
+    }
+
+    .swatch.l {
+      background: #f1f1f1;
+      border-style: dashed
+    }
+
+    .swatch.h {
+      background: #aaa
+    }
+
+    .note {
+      border: 1px solid #222;
+      padding: 3mm 3.5mm;
+      font-size: 8.3pt;
+      line-height: 1.45
+    }
+
+    .note .note-title {
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      font-size: 9pt;
+      margin-bottom: 2mm
+    }
+
+    .concern-to {
+      font-size: 8pt;
+      font-weight: 800;
+      border-bottom: 1px solid #999;
+      padding-bottom: 1.5mm;
+      margin-bottom: 2mm
+    }
+
+    .note .message {
+      white-space: pre-line;
+      font-size: 8.3pt;
+      font-weight: 500
+    }
+
+    .action {
+      margin-top: 2.5mm;
+      border: 1.5px solid #222;
+      border-left: 4px solid #111;
+      padding: 2.5mm 3mm;
+      background: #f1f1f1;
+      font-size: 8.2pt;
+      line-height: 1.45;
+      font-weight: 600
+    }
+
+    .action strong {
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .35px
+    }
+
+    .signatures {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 7mm;
+      margin-top: 19mm
+    }
+
+    .sig {
+      text-align: center;
+      border-top: 1px solid #222;
+      padding-top: 2mm;
+      font-size: 7.5pt;
+      font-weight: 800
+    }
+
+    .sig small {
+      display: none
+    }
+
+    .footer {
+      border-top: 1px solid #555;
+      margin-top: 7mm;
+      padding-top: 2mm;
+      text-align: center;
+      font-size: 7pt;
+      color: #444;
+      line-height: 1.45
+    }
+
+    .fine {
+      font-size: 7pt;
+      color: #555;
+      margin-top: 2mm
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 0
+    }
+
+    @media print {
+      body {
+        background: #fff
+      }
+
+      .toolbar {
+        display: none
+      }
+
+      .sheet {
+        margin: 0;
+        width: 210mm;
+        min-height: 297mm;
+        box-shadow: none;
+        page-break-after: always
+      }
+
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact
+      }
+    }
+
+    @media screen and (max-width:850px) {
+      .sheet {
+        transform-origin: top left;
+        width: 210mm;
+        margin-left: 0
+      }
+    }
+
+    /* BCC premium navy + yellow visual theme */
+    :root {
+      --ink: #17152f;
+      --muted: #626273;
+      --line: #25206f;
+      --soft: #fff4a8;
+      --pale: #fffbd1;
+      --navy: #1b1464;
+      --navy-deep: #120d4d;
+      --yellow: #ffe600;
+      --pale-yellow: #fff9a6;
+      --green: #20a765;
+      --red: #d93645;
+      --grey: #e9e9ee;
+      --white: #ffffff;
+    }
+
+    body {
+      background: #fff9c9;
+      color: var(--ink)
+    }
+
+    .toolbar button {
+      border: 1px solid var(--navy);
+      background: var(--navy);
+      color: #fff;
+      border-radius: 9px;
+      box-shadow: 0 3px 0 var(--yellow);
+      padding: 11px 18px
+    }
+
+    .toolbar button:hover {
+      background: var(--navy-deep)
+    }
+
+    .sheet {
+      background: #fff;
+      border: 1px solid #f0e8a1;
+      border-top: 5px solid var(--yellow);
+      border-radius: 3px;
+      box-shadow: 0 8px 28px #1b14641a
+    }
+
+    .masthead {
+      border-bottom: 3px solid var(--navy);
+      position: relative
+    }
+
+    .masthead:after {
+      content: "";
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 34%;
+      height: 3px;
+      background: var(--yellow)
+    }
+
+    .logo {
+      filter: none
+    }
+
+    .brand h1 {
+      color: var(--navy)
+    }
+
+    .brand .sub {
+      color: #55556a
+    }
+
+    .brand .est {
+      color: var(--navy);
+      background: var(--pale-yellow);
+      display: inline-block;
+      padding: 1mm 3mm;
+      border-radius: 20px
+    }
+
+    .doc-title h2 {
+      color: var(--navy)
+    }
+
+    .doc-title p {
+      color: #686779
+    }
+
+    .flag {
+      background: var(--pale-yellow);
+      border: 1px solid #e4cf00;
+      border-left: 4px solid var(--yellow);
+      border-radius: 5px;
+      color: var(--navy)
+    }
+
+    .flag strong {
+      color: var(--navy)
+    }
+
+    .section-head {
+      color: var(--navy);
+      border-bottom: 2px solid #ded9ff;
+      position: relative;
+      padding-left: 2mm
+    }
+
+    .section-head:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 13mm;
+      height: 3px;
+      background: var(--yellow)
+    }
+
+    .field {
+      border-bottom: 1px dotted #b9b7c9
+    }
+
+    .field label {
+      color: #666579
+    }
+
+    .field b {
+      color: #1c1a39
+    }
+
+    .stats {
+      border: 1px solid #d7d5e5;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff
+    }
+
+    .stat {
+      border-right: 1px solid #e1dfeb
+    }
+
+    .stat strong {
+      color: var(--navy)
+    }
+
+    .stat span {
+      color: #666579
+    }
+
+    .stat:nth-child(1) {
+      background: #e8f7ef
+    }
+
+    .stat:nth-child(1) strong {
+      color: #16834f
+    }
+
+    .stat:nth-child(2) {
+      background: #fff0f0
+    }
+
+    .stat:nth-child(2) strong {
+      color: var(--red)
+    }
+
+    .stat:nth-child(3) {
+      background: #fff9d8
+    }
+
+    .stat:nth-child(3) strong {
+      color: #8a7000
+    }
+
+    .stat:nth-child(4) {
+      background: #f0eff8
+    }
+
+    .stat:nth-child(4) strong {
+      color: #55516f
+    }
+
+    .stat:nth-child(5) {
+      background: #eeedff
+    }
+
+    .rate {
+      color: var(--navy);
+      border: 2px solid var(--navy);
+      background: #fffbd1;
+      border-radius: 5px
+    }
+
+    .calendar-wrap {
+      border: 1px solid #d8d5e8;
+      border-radius: 6px;
+      background: #fff;
+      padding: 3mm
+    }
+
+    .calendar th {
+      background: var(--navy);
+      color: #fff
+    }
+
+    .calendar td {
+      border: 1px solid #d8d7e1;
+      border-radius: 3px;
+      color: #28263e
+    }
+
+    .calendar td.present {
+      background: #dff5e8;
+      border-color: #9bd8b5;
+      color: #147b49
+    }
+
+    .calendar td.absent {
+      background: #ffe5e7;
+      border: 1.5px solid #e59aa2;
+      color: #bd2637
+    }
+
+    .calendar td.leave {
+      background: #fff5bf;
+      border: 1px dashed #d2ae00;
+      color: #705b00
+    }
+
+    .calendar td.holiday {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #fff
+    }
+
+    .calendar td.unmarked {
+      background: #fafafa;
+      color: #aaa;
+      border: 1px dotted #d5d5dc
+    }
+
+    .swatch {
+      border-radius: 2px;
+      border-color: #aaa
+    }
+
+    .swatch.p {
+      background: #dff5e8;
+      border-color: #9bd8b5
+    }
+
+    .swatch.a {
+      background: #ffe5e7;
+      border: 1.5px solid #e59aa2
+    }
+
+    .swatch.l {
+      background: #fff5bf;
+      border-color: #d2ae00
+    }
+
+    .swatch.h {
+      background: var(--navy);
+      border-color: var(--navy)
+    }
+
+    .note {
+      border: 1px solid #d8d5e8;
+      border-top: 3px solid var(--navy);
+      border-radius: 5px;
+      background: #fff
+    }
+
+    .note .note-title {
+      color: var(--navy)
+    }
+
+    .concern-to {
+      color: #24214f;
+      border-bottom: 1px solid #d7d5e5
+    }
+
+    .action {
+      border: 1px solid #eadb57;
+      border-left: 4px solid var(--yellow);
+      border-radius: 4px;
+      background: #fffbdc;
+      color: #28243e
+    }
+
+    .action strong {
+      color: var(--navy)
+    }
+
+    .sig {
+      border-top: 1.5px solid var(--navy);
+      color: var(--navy)
+    }
+
+    .footer {
+      border-top: 2px solid var(--navy);
+      color: #626174
+    }
+
+    .footer b {
+      color: var(--navy)
+    }
+
+    @media print {
+      body {
+        background: #fff
+      }
+
+      .sheet {
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+        box-shadow: none
+      }
+
+      .toolbar {
+        display: none
+      }
+    }
+
+    /* A4 print sizing: one edge-to-edge A4 page, with only a compact safe content inset. */
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    @media print {
+      html, body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .sheet {
+        width: 210mm;
+        height: 297mm;
+        min-height: 297mm;
+        margin: 0 !important;
+        padding: 8mm 9mm 7mm;
+        box-sizing: border-box;
+        border: 0;
+        border-top: 5px solid var(--yellow);
+        border-radius: 0;
+        box-shadow: none;
+        page-break-after: auto;
+        break-after: auto;
+      }
+
+      .signatures {
+        margin-top: 12mm;
+      }
+
+      .footer {
+        margin-top: 4mm;
+      }
+    }
+
+
+    /* One-page A4 print layout: keep the complete report on a single sheet. */
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    @media print {
+      html, body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        overflow: hidden;
+      }
+
+      .toolbar { display: none !important; }
+
+      .sheet {
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 6mm 8mm 5mm !important;
+        box-sizing: border-box !important;
+        border: 0 !important;
+        border-top: 3px solid var(--yellow) !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        overflow: hidden !important;
+        page-break-after: auto !important;
+        break-after: auto !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .masthead { padding-bottom: 2.5mm !important; }
+      .logo { width: 21mm !important; height: 21mm !important; }
+      .brand h1 { font-size: 15pt !important; margin-bottom: 1mm !important; }
+      .brand .sub { font-size: 7.5pt !important; line-height: 1.25 !important; }
+      .brand .est { font-size: 7pt !important; margin-top: .5mm !important; }
+      .doc-title { margin: 2.5mm 0 2mm !important; }
+      .doc-title h2 { font-size: 12pt !important; }
+      .doc-title p { font-size: 7pt !important; }
+      .flag { padding: 1.5mm 2mm !important; margin-bottom: 2mm !important; font-size: 7pt !important; }
+      .flag strong { font-size: 7.2pt !important; }
+      .section { margin-top: 2mm !important; }
+      .section-head { font-size: 8pt !important; padding-bottom: .8mm !important; margin-bottom: 1.5mm !important; }
+      .details { gap: 1mm 4mm !important; }
+      .field { min-height: 7mm !important; padding-bottom: .5mm !important; font-size: 7pt !important; }
+      .field label { font-size: 6pt !important; margin-bottom: .5mm !important; }
+      .field b { font-size: 8pt !important; }
+      .stat { padding: 1.8mm .5mm !important; }
+      .stat strong { font-size: 14pt !important; }
+      .stat span { font-size: 6pt !important; margin-top: .8mm !important; }
+      .rate-row { margin-top: 1mm !important; font-size: 7pt !important; }
+      .rate { font-size: 10pt !important; padding: .8mm 3mm !important; }
+      .calendar-wrap { padding: 1.5mm !important; }
+      .calendar { border-spacing: .6mm !important; }
+      .calendar th { font-size: 6pt !important; padding: 1mm 0 !important; }
+      .calendar td { height: 6.5mm !important; font-size: 7pt !important; line-height: 1.05 !important; }
+      .calendar td small { font-size: 5.5pt !important; }
+      .legend { gap: 3mm !important; font-size: 6pt !important; margin-top: 1mm !important; }
+      .swatch { width: 3mm !important; height: 3mm !important; }
+      .note { padding: 1.8mm 2.5mm !important; font-size: 7pt !important; line-height: 1.3 !important; }
+      .note .note-title { font-size: 7.5pt !important; margin-bottom: 1mm !important; }
+      .concern-to { font-size: 6.8pt !important; padding-bottom: .8mm !important; margin-bottom: 1mm !important; }
+      .note .message { font-size: 7pt !important; line-height: 1.3 !important; }
+      .action { margin-top: 1.2mm !important; padding: 1.5mm 2mm !important; font-size: 6.8pt !important; line-height: 1.3 !important; }
+      .section[aria-label="acknowledgement"] { margin-top: 2mm !important; }
+      .signatures { gap: 5mm !important; margin-top: 7mm !important; }
+      .sig { padding-top: 1mm !important; font-size: 6.3pt !important; }
+      .footer { margin-top: 3mm !important; padding-top: 1mm !important; font-size: 6pt !important; line-height: 1.25 !important; }
+
+      *, *::before, *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+
+
+
+    /* Fill the A4 sheet vertically and anchor the footer at the bottom. */
+    .sheet {
+      display: flex;
+      flex-direction: column;
+      min-height: 297mm;
+    }
+    .sheet > .section {
+      margin-top: 3.5mm;
+    }
+    .signatures {
+      margin-top: 11mm;
+    }
+    .footer {
+      margin-top: auto;
+      padding-top: 2mm;
+    }
+
+    @media print {
+      .sheet {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+      }
+      .sheet > .section {
+        margin-top: 3.5mm !important;
+      }
+      .signatures {
+        margin-top: 11mm !important;
+      }
+      .footer {
+        margin-top: auto !important;
+        padding-top: 2mm !important;
+      }
+    }
+
+  
+
+    /* A4 balanced-fill layout: enlarge the report itself, not just the footer. */
+    .sheet {
+      height: 297mm;
+      min-height: 297mm;
+      padding: 8mm 10mm 7mm;
+      display: flex;
+      flex-direction: column;
+    }
+    .masthead { padding-bottom: 6mm; grid-template-columns: 29mm 1fr 29mm; }
+    .logo { width: 27mm; height: 27mm; }
+    .brand h1 { font-size: 19pt; }
+    .brand .sub { font-size: 9.5pt; line-height: 1.5; }
+    .brand .est { font-size: 9pt; margin-top: 1.5mm; padding: 1.2mm 3.5mm; }
+    .doc-title { margin: 6mm 0 5mm; }
+    .doc-title h2 { font-size: 16.5pt; }
+    .doc-title p { font-size: 9pt; }
+    .flag { padding: 3.2mm 3.5mm; margin-bottom: 5mm; font-size: 9pt; }
+    .flag strong { font-size: 9.5pt; }
+    .section { margin-top: 5.2mm; }
+    .section-head { font-size: 10pt; padding-bottom: 2mm; margin-bottom: 3mm; }
+    .details { gap: 3mm 5.5mm; }
+    .field { font-size: 9pt; min-height: 11mm; padding-bottom: 1.5mm; }
+    .field label { font-size: 8pt; margin-bottom: 1.3mm; }
+    .field b { font-size: 10pt; }
+    .stats { min-height: 16mm; }
+    .stat { padding: 3.8mm 1mm; }
+    .stat strong { font-size: 19pt; }
+    .stat span { font-size: 8pt; margin-top: 1.8mm; }
+    .rate-row { margin-top: 2.5mm; font-size: 9pt; }
+    .rate { font-size: 14pt; padding: 1.8mm 4.5mm; }
+    .calendar-wrap { padding: 3.5mm; }
+    .calendar { border-spacing: 1.4mm; }
+    .calendar th { font-size: 8pt; padding: 2.3mm 0; }
+    .calendar td { height: 11mm; font-size: 9pt; }
+    .legend { gap: 5.5mm; font-size: 8.2pt; margin-top: 2.5mm; }
+    .swatch { width: 4.5mm; height: 4.5mm; }
+    .note { padding: 4mm 4.5mm; }
+    .note .note-title { font-size: 10pt; margin-bottom: 2.5mm; }
+    .concern-to { font-size: 9pt; padding-bottom: 2mm; margin-bottom: 2.5mm; }
+    .note .message { font-size: 9pt; line-height: 1.5; }
+    .action { margin-top: 3mm; padding: 3mm 3.5mm; font-size: 9pt; line-height: 1.5; }
+    .signatures { gap: 7mm; margin-top: 22mm; }
+    .sig { padding-top: 2.5mm; font-size: 8.5pt; }
+    .footer { margin-top: 8mm; padding-top: 2.5mm; font-size: 8pt; line-height: 1.5; }
+    .footer b { font-size: 8.5pt; }
+
+    @media print {
+      .sheet {
+        width: 210mm;
+        height: 297mm;
+        min-height: 297mm;
+        margin: 0;
+        padding: 8mm 10mm 7mm;
+        box-shadow: none;
+        page-break-after: auto;
+        break-after: auto;
+      }
+      html, body { width: 210mm; height: 297mm; margin: 0; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }

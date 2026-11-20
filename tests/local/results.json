@@ -1,0 +1,415 @@
+[
+ {
+  "feature": "Device sessions",
+  "scenario": "Three web logins by one student",
+  "expected": "first two allowed, third replaces the oldest",
+  "actual": "oldest revoked, 2 active",
+  "pass": true
+ },
+ {
+  "feature": "Device sessions",
+  "scenario": "App logins counted separately from web",
+  "expected": "two app logins add no replacement",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Device sessions",
+  "scenario": "Session token carries role + session id",
+  "expected": "custom token includes bsid and role",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Device sessions",
+  "scenario": "Paused account / unknown platform",
+  "expected": "both refused",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Device sessions",
+  "scenario": "Privileged call without a registered session",
+  "expected": "unauthenticated",
+  "actual": "Session not registered. Please sign in again.",
+  "pass": true
+ },
+ {
+  "feature": "Device sessions",
+  "scenario": "Revoked session cannot call functions",
+  "expected": "unauthenticated",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Accounts",
+  "scenario": "Admin creates a student",
+  "expected": "next free roll (05 after 01-04): ID 26BCC1005, claims set, enrollment created",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Accounts",
+  "scenario": "Student tries to create an account",
+  "expected": "permission-denied",
+  "actual": "You do not have permission for this action.",
+  "pass": true
+ },
+ {
+  "feature": "Accounts",
+  "scenario": "Short password / inactive class",
+  "expected": "both refused",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Accounts",
+  "scenario": "Same roll number twice in one class and year",
+  "expected": "second attempt already-exists (Student ID is unique)",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Accounts",
+  "scenario": "Pause a student",
+  "expected": "disabled in Auth, sessions revoked, status paused",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Accounts",
+  "scenario": "Teacher class change forces new sign-in",
+  "expected": "claims updated, sessions revoked",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Marks",
+  "scenario": "Teacher of the class enters marks",
+  "expected": "saved; status decided by server",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Marks",
+  "scenario": "Marks above full marks / unknown subject",
+  "expected": "rejected",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Marks",
+  "scenario": "Draft marks block declaring",
+  "expected": "failed-precondition",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Results",
+  "scenario": "Teacher without declare right",
+  "expected": "permission-denied",
+  "actual": "You are not authorised to declare results for this class.",
+  "pass": true
+ },
+ {
+  "feature": "Results",
+  "scenario": "Admin declares: totals, %, ranks (ties share a rank), Urdu skip",
+  "expected": "A,B rank 1 (84%); C rank 3 on FM 200 (65%); D rank 4",
+  "actual": "A 84% r1, B r1, C 65% (FM 200) r3, D 48% r4",
+  "pass": true
+ },
+ {
+  "feature": "Results",
+  "scenario": "Grade from grading scale",
+  "expected": "A=A, C=B, D=D",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Results",
+  "scenario": "Declaring twice does not notify twice",
+  "expected": "one notification",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Results",
+  "scenario": "Leaderboard document built",
+  "expected": "rows for the declared exam",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Marks",
+  "scenario": "Marks locked after declaring",
+  "expected": "failed-precondition",
+  "actual": "This result is declared. Use “Correct” to change a mark.",
+  "pass": true
+ },
+ {
+  "feature": "Marks",
+  "scenario": "Correction needs a reason; recalculates ranks",
+  "expected": "A moves alone to rank 1, B rank 2",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Results",
+  "scenario": "Student reads only own report card through the function",
+  "expected": "own card returned",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Results",
+  "scenario": "Teacher of another class cannot print this class",
+  "expected": "permission-denied",
+  "actual": "You are not allowed to view these report cards.",
+  "pass": true
+ },
+ {
+  "feature": "Attendance",
+  "scenario": "Future date",
+  "expected": "failed-precondition",
+  "actual": "Attendance cannot be marked for a future date.",
+  "pass": true
+ },
+ {
+  "feature": "Attendance",
+  "scenario": "Mark a day, then save the same day again",
+  "expected": "one record per class per day; second save replaces",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Attendance",
+  "scenario": "Percentage and low-attendance list",
+  "expected": "B 100%, others 0%; threshold works",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Attendance",
+  "scenario": "Session totals equal the month-by-month count",
+  "expected": "both methods agree, also after an edit",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Attendance",
+  "scenario": "Teacher of another class",
+  "expected": "permission-denied",
+  "actual": "You are not allowed to mark attendance for this class.",
+  "pass": true
+ },
+ {
+  "feature": "Attendance",
+  "scenario": "Student cannot see another student's attendance",
+  "expected": "permission-denied",
+  "actual": "You are not allowed to see this attendance.",
+  "pass": true
+ },
+ {
+  "feature": "Attendance",
+  "scenario": "Notice number is stable",
+  "expected": "same number when printed again",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Fees",
+  "scenario": "Duplicate fee name for the class",
+  "expected": "already-exists",
+  "actual": "This fee already exists for the class.",
+  "pass": true
+ },
+ {
+  "feature": "Fees",
+  "scenario": "Generate month twice",
+  "expected": "first creates dues, second creates none",
+  "actual": "10 then 0",
+  "pass": true
+ },
+ {
+  "feature": "Fees",
+  "scenario": "One-time fee is not billed again next month",
+  "expected": "no second Admission fee",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Fees",
+  "scenario": "Partial payment",
+  "expected": "balance reduces, receipt R-1001",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Fees",
+  "scenario": "Payment above what is due",
+  "expected": "failed-precondition, nothing changed",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Fees",
+  "scenario": "All-or-nothing: one bad line cancels the whole payment",
+  "expected": "no partial write",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Fees",
+  "scenario": "Second payment gets the next receipt number",
+  "expected": "R-1002",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Fees",
+  "scenario": "Discount lower than what was paid",
+  "expected": "failed-precondition",
+  "actual": "The new total cannot be lower than the amount already paid.",
+  "pass": true
+ },
+ {
+  "feature": "Fees",
+  "scenario": "Running totals",
+  "expected": "billed and paid totals match the ledger",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Fees",
+  "scenario": "Receipt lines",
+  "expected": "tuition fully paid, due 0",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Fees",
+  "scenario": "Student cannot record a payment",
+  "expected": "permission-denied",
+  "actual": "You do not have permission for this action.",
+  "pass": true
+ },
+ {
+  "feature": "Quizzes",
+  "scenario": "Total marks follow questions and marking scheme",
+  "expected": "3 questions x 4 = 12",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Quizzes",
+  "scenario": "Start returns questions WITHOUT answers",
+  "expected": "no correct_option / explanation",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Quizzes",
+  "scenario": "Class 10 quiz is closed to class 12",
+  "expected": "permission-denied",
+  "actual": "This quiz is not for your class.",
+  "pass": true
+ },
+ {
+  "feature": "Quizzes",
+  "scenario": "Server scores: 2 right, 1 wrong with −1",
+  "expected": "score 7 (2×4 − 1)",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Quizzes",
+  "scenario": "Second submission / restart",
+  "expected": "both refused",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Quizzes",
+  "scenario": "Browser cannot choose its own score",
+  "expected": "extra fields ignored; score comes from answers",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Quizzes",
+  "scenario": "Late manual submission (after expiry + grace)",
+  "expected": "failed-precondition",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Quizzes",
+  "scenario": "Tab-switch submission is recorded with its reason",
+  "expected": "submission_reason tab-switch",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Leaderboards",
+  "scenario": "Quiz + cumulative boards built once from markers",
+  "expected": "A first (7), ranks shared on equal score",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Quizzes",
+  "scenario": "Student result with explanations after submission",
+  "expected": "correct answers revealed only now",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Notifications",
+  "scenario": "10-minute reminder runs twice",
+  "expected": "exactly ONE notification",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Notifications",
+  "scenario": "\"Go live\" pressed twice",
+  "expected": "exactly ONE live notification, push sent once",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Content",
+  "scenario": "Drive / OneDrive share links accepted; wrong site rejected; video upload not offered",
+  "expected": "links saved, bad link refused, lecture upload refused",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Meetings",
+  "scenario": "Create for selected students; room name hidden",
+  "expected": "room stored apart; only invited student can join when live",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Super 15",
+  "scenario": "Paused member cannot post, join or list; active member can",
+  "expected": "refused for paused, allowed for active",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Quizzes",
+  "scenario": "Quiz with more than 150 questions refused; edits refresh what students receive",
+  "expected": "cap enforced; edited question served",
+  "actual": "ok",
+  "pass": true
+ },
+ {
+  "feature": "Notifications",
+  "scenario": "Mark all as read stores one timestamp",
+  "expected": "last_notif_seen_at set",
+  "actual": "ok",
+  "pass": true
+ }
+]

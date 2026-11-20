@@ -1,0 +1,632 @@
+{
+ "50": {
+  "students": 50,
+  "setup_s": 0.1,
+  "rush": {
+   "wall_s": 0.03,
+   "reads": 1750,
+   "writes": 350,
+   "reads_per_student": 35,
+   "writes_per_student": 7
+  },
+  "result_declare": {
+   "ms": 4,
+   "reads": 257,
+   "writes": 54
+  },
+  "boards_rebuild": {
+   "ms": 2,
+   "reads": 201,
+   "writes": 52,
+   "dirty_left": 0,
+   "class_board_rows": 50,
+   "quiz_board_rows": 50
+  },
+  "rss_mb": 62,
+  "rss_growth_mb": 3,
+  "ops": [
+   {
+    "op": "login (registerSession)",
+    "calls": 50,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.09,
+    "cpu_ms_p95": 0.22,
+    "cpu_ms_max": 1.2,
+    "reads_per_call": 3,
+    "writes_per_call": 1
+   },
+   {
+    "op": "student dashboard",
+    "calls": 50,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.13,
+    "cpu_ms_p95": 1.81,
+    "cpu_ms_max": 3.2,
+    "reads_per_call": 11,
+    "writes_per_call": 1
+   },
+   {
+    "op": "attendance summary",
+    "calls": 50,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.05,
+    "cpu_ms_p95": 0.27,
+    "cpu_ms_max": 7.2,
+    "reads_per_call": 5,
+    "writes_per_call": 0
+   },
+   {
+    "op": "own report card",
+    "calls": 50,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.02,
+    "cpu_ms_p95": 0.1,
+    "cpu_ms_max": 0.7,
+    "reads_per_call": 3,
+    "writes_per_call": 0
+   },
+   {
+    "op": "quiz start",
+    "calls": 50,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.07,
+    "cpu_ms_p95": 0.18,
+    "cpu_ms_max": 6.1,
+    "reads_per_call": 6,
+    "writes_per_call": 1
+   },
+   {
+    "op": "quiz submit",
+    "calls": 50,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.12,
+    "cpu_ms_p95": 0.77,
+    "cpu_ms_max": 2.2,
+    "reads_per_call": 5,
+    "writes_per_call": 4
+   },
+   {
+    "op": "quiz result",
+    "calls": 50,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.04,
+    "cpu_ms_p95": 0.24,
+    "cpu_ms_max": 3.3,
+    "reads_per_call": 2,
+    "writes_per_call": 0
+   }
+  ]
+ },
+ "100": {
+  "students": 100,
+  "setup_s": 0.1,
+  "rush": {
+   "wall_s": 0.04,
+   "reads": 3500,
+   "writes": 700,
+   "reads_per_student": 35,
+   "writes_per_student": 7
+  },
+  "result_declare": {
+   "ms": 6,
+   "reads": 507,
+   "writes": 104
+  },
+  "boards_rebuild": {
+   "ms": 5,
+   "reads": 401,
+   "writes": 102,
+   "dirty_left": 0,
+   "class_board_rows": 100,
+   "quiz_board_rows": 100
+  },
+  "rss_mb": 65,
+  "rss_growth_mb": 2,
+  "ops": [
+   {
+    "op": "login (registerSession)",
+    "calls": 100,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.06,
+    "cpu_ms_p95": 0.16,
+    "cpu_ms_max": 3,
+    "reads_per_call": 3,
+    "writes_per_call": 1
+   },
+   {
+    "op": "student dashboard",
+    "calls": 100,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.1,
+    "cpu_ms_p95": 1.31,
+    "cpu_ms_max": 3.6,
+    "reads_per_call": 11,
+    "writes_per_call": 1
+   },
+   {
+    "op": "attendance summary",
+    "calls": 100,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.03,
+    "cpu_ms_p95": 0.34,
+    "cpu_ms_max": 3.4,
+    "reads_per_call": 5,
+    "writes_per_call": 0
+   },
+   {
+    "op": "own report card",
+    "calls": 100,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.02,
+    "cpu_ms_p95": 0.16,
+    "cpu_ms_max": 6.1,
+    "reads_per_call": 3,
+    "writes_per_call": 0
+   },
+   {
+    "op": "quiz start",
+    "calls": 100,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.05,
+    "cpu_ms_p95": 0.18,
+    "cpu_ms_max": 1.4,
+    "reads_per_call": 6,
+    "writes_per_call": 1
+   },
+   {
+    "op": "quiz submit",
+    "calls": 100,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.11,
+    "cpu_ms_p95": 0.4,
+    "cpu_ms_max": 1.9,
+    "reads_per_call": 5,
+    "writes_per_call": 4
+   },
+   {
+    "op": "quiz result",
+    "calls": 100,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.03,
+    "cpu_ms_p95": 0.09,
+    "cpu_ms_max": 5.5,
+    "reads_per_call": 2,
+    "writes_per_call": 0
+   }
+  ]
+ },
+ "500": {
+  "students": 500,
+  "setup_s": 0.3,
+  "rush": {
+   "wall_s": 0.34,
+   "reads": 17500,
+   "writes": 3500,
+   "reads_per_student": 35,
+   "writes_per_student": 7
+  },
+  "result_declare": {
+   "ms": 36,
+   "reads": 2507,
+   "writes": 504
+  },
+  "boards_rebuild": {
+   "ms": 10,
+   "reads": 2001,
+   "writes": 502,
+   "dirty_left": 0,
+   "class_board_rows": 500,
+   "quiz_board_rows": 500
+  },
+  "rss_mb": 103,
+  "rss_growth_mb": 26,
+  "ops": [
+   {
+    "op": "login (registerSession)",
+    "calls": 500,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.05,
+    "cpu_ms_p95": 0.16,
+    "cpu_ms_max": 0.9,
+    "reads_per_call": 3,
+    "writes_per_call": 1
+   },
+   {
+    "op": "student dashboard",
+    "calls": 500,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.09,
+    "cpu_ms_p95": 0.64,
+    "cpu_ms_max": 5.1,
+    "reads_per_call": 11,
+    "writes_per_call": 1
+   },
+   {
+    "op": "attendance summary",
+    "calls": 500,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.03,
+    "cpu_ms_p95": 0.1,
+    "cpu_ms_max": 5.2,
+    "reads_per_call": 5,
+    "writes_per_call": 0
+   },
+   {
+    "op": "own report card",
+    "calls": 500,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.02,
+    "cpu_ms_p95": 0.07,
+    "cpu_ms_max": 2.7,
+    "reads_per_call": 3,
+    "writes_per_call": 0
+   },
+   {
+    "op": "quiz start",
+    "calls": 500,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.04,
+    "cpu_ms_p95": 0.15,
+    "cpu_ms_max": 3.7,
+    "reads_per_call": 6,
+    "writes_per_call": 1
+   },
+   {
+    "op": "quiz submit",
+    "calls": 500,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.09,
+    "cpu_ms_p95": 0.27,
+    "cpu_ms_max": 1.7,
+    "reads_per_call": 5,
+    "writes_per_call": 4
+   },
+   {
+    "op": "quiz result",
+    "calls": 500,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.03,
+    "cpu_ms_p95": 0.07,
+    "cpu_ms_max": 5.9,
+    "reads_per_call": 2,
+    "writes_per_call": 0
+   }
+  ]
+ },
+ "1000": {
+  "students": 1000,
+  "setup_s": 0.5,
+  "rush": {
+   "wall_s": 0.71,
+   "reads": 35000,
+   "writes": 7000,
+   "reads_per_student": 35,
+   "writes_per_student": 7
+  },
+  "result_declare": {
+   "ms": 68,
+   "reads": 5007,
+   "writes": 1004
+  },
+  "boards_rebuild": {
+   "ms": 36,
+   "reads": 4001,
+   "writes": 1002,
+   "dirty_left": 0,
+   "class_board_rows": 1000,
+   "quiz_board_rows": 1000
+  },
+  "rss_mb": 122,
+  "rss_growth_mb": 24,
+  "ops": [
+   {
+    "op": "login (registerSession)",
+    "calls": 1000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.04,
+    "cpu_ms_p95": 0.11,
+    "cpu_ms_max": 0.6,
+    "reads_per_call": 3,
+    "writes_per_call": 1
+   },
+   {
+    "op": "student dashboard",
+    "calls": 1000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.07,
+    "cpu_ms_p95": 0.19,
+    "cpu_ms_max": 4.9,
+    "reads_per_call": 11,
+    "writes_per_call": 1
+   },
+   {
+    "op": "attendance summary",
+    "calls": 1000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.02,
+    "cpu_ms_p95": 0.07,
+    "cpu_ms_max": 2.5,
+    "reads_per_call": 5,
+    "writes_per_call": 0
+   },
+   {
+    "op": "own report card",
+    "calls": 1000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.01,
+    "cpu_ms_p95": 0.04,
+    "cpu_ms_max": 0.6,
+    "reads_per_call": 3,
+    "writes_per_call": 0
+   },
+   {
+    "op": "quiz start",
+    "calls": 1000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.04,
+    "cpu_ms_p95": 0.09,
+    "cpu_ms_max": 0.7,
+    "reads_per_call": 6,
+    "writes_per_call": 1
+   },
+   {
+    "op": "quiz submit",
+    "calls": 1000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.07,
+    "cpu_ms_p95": 0.16,
+    "cpu_ms_max": 2.1,
+    "reads_per_call": 5,
+    "writes_per_call": 4
+   },
+   {
+    "op": "quiz result",
+    "calls": 1000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.02,
+    "cpu_ms_p95": 0.05,
+    "cpu_ms_max": 10.6,
+    "reads_per_call": 2,
+    "writes_per_call": 0
+   }
+  ]
+ },
+ "2000": {
+  "students": 2000,
+  "setup_s": 0.7,
+  "rush": {
+   "wall_s": 1.05,
+   "reads": 70000,
+   "writes": 14000,
+   "reads_per_student": 35,
+   "writes_per_student": 7
+  },
+  "result_declare": {
+   "ms": 132,
+   "reads": 10007,
+   "writes": 2004
+  },
+  "boards_rebuild": {
+   "ms": 60,
+   "reads": 8001,
+   "writes": 2002,
+   "dirty_left": 0,
+   "class_board_rows": 2000,
+   "quiz_board_rows": 2000
+  },
+  "rss_mb": 156,
+  "rss_growth_mb": 47,
+  "ops": [
+   {
+    "op": "login (registerSession)",
+    "calls": 2000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.04,
+    "cpu_ms_p95": 0.1,
+    "cpu_ms_max": 2.5,
+    "reads_per_call": 3,
+    "writes_per_call": 1
+   },
+   {
+    "op": "student dashboard",
+    "calls": 2000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.07,
+    "cpu_ms_p95": 0.17,
+    "cpu_ms_max": 4.5,
+    "reads_per_call": 11,
+    "writes_per_call": 1
+   },
+   {
+    "op": "attendance summary",
+    "calls": 2000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.02,
+    "cpu_ms_p95": 0.07,
+    "cpu_ms_max": 8.3,
+    "reads_per_call": 5,
+    "writes_per_call": 0
+   },
+   {
+    "op": "own report card",
+    "calls": 2000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.01,
+    "cpu_ms_p95": 0.06,
+    "cpu_ms_max": 0.7,
+    "reads_per_call": 3,
+    "writes_per_call": 0
+   },
+   {
+    "op": "quiz start",
+    "calls": 2000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.04,
+    "cpu_ms_p95": 0.09,
+    "cpu_ms_max": 0.8,
+    "reads_per_call": 6,
+    "writes_per_call": 1
+   },
+   {
+    "op": "quiz submit",
+    "calls": 2000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.07,
+    "cpu_ms_p95": 0.17,
+    "cpu_ms_max": 2,
+    "reads_per_call": 5,
+    "writes_per_call": 4
+   },
+   {
+    "op": "quiz result",
+    "calls": 2000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.02,
+    "cpu_ms_p95": 0.05,
+    "cpu_ms_max": 5.1,
+    "reads_per_call": 2,
+    "writes_per_call": 0
+   }
+  ]
+ },
+ "5000": {
+  "students": 5000,
+  "setup_s": 2,
+  "rush": {
+   "wall_s": 3.03,
+   "reads": 175000,
+   "writes": 35000,
+   "reads_per_student": 35,
+   "writes_per_student": 7
+  },
+  "result_declare": {
+   "ms": 209,
+   "reads": 25007,
+   "writes": 5004
+  },
+  "boards_rebuild": {
+   "ms": 150,
+   "reads": 20001,
+   "writes": 5002,
+   "dirty_left": 0,
+   "class_board_rows": 2500,
+   "quiz_board_rows": 2500
+  },
+  "rss_mb": 267,
+  "rss_growth_mb": 132,
+  "ops": [
+   {
+    "op": "login (registerSession)",
+    "calls": 5000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.06,
+    "cpu_ms_p95": 0.12,
+    "cpu_ms_max": 2.7,
+    "reads_per_call": 3,
+    "writes_per_call": 1
+   },
+   {
+    "op": "student dashboard",
+    "calls": 5000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.11,
+    "cpu_ms_p95": 0.35,
+    "cpu_ms_max": 3.2,
+    "reads_per_call": 11,
+    "writes_per_call": 1
+   },
+   {
+    "op": "attendance summary",
+    "calls": 5000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.03,
+    "cpu_ms_p95": 0.12,
+    "cpu_ms_max": 9.7,
+    "reads_per_call": 5,
+    "writes_per_call": 0
+   },
+   {
+    "op": "own report card",
+    "calls": 5000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.02,
+    "cpu_ms_p95": 0.06,
+    "cpu_ms_max": 1.7,
+    "reads_per_call": 3,
+    "writes_per_call": 0
+   },
+   {
+    "op": "quiz start",
+    "calls": 5000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.05,
+    "cpu_ms_p95": 0.1,
+    "cpu_ms_max": 1.6,
+    "reads_per_call": 6,
+    "writes_per_call": 1
+   },
+   {
+    "op": "quiz submit",
+    "calls": 5000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.11,
+    "cpu_ms_p95": 0.24,
+    "cpu_ms_max": 4,
+    "reads_per_call": 5,
+    "writes_per_call": 4
+   },
+   {
+    "op": "quiz result",
+    "calls": 5000,
+    "errors": 0,
+    "errs": {},
+    "cpu_ms_p50": 0.03,
+    "cpu_ms_p95": 0.07,
+    "cpu_ms_max": 4.3,
+    "reads_per_call": 2,
+    "writes_per_call": 0
+   }
+  ]
+ }
+}
