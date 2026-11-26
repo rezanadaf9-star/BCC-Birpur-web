@@ -1,5 +1,5 @@
-// Guest page (index.html) glue. The page itself is the ORIGINAL design; this file only
-//  1) connects the original login card to Firebase,  2) loads toppers + hero images + faculty from the database,
+// Guest page (index.html) glue. This file only
+//  1) connects the login card to Firebase,  2) loads toppers + hero images + events from the database,
 //  3) sends an already-signed-in user to their dashboard. Public content uses the plain Firestore REST API (no SDK, no CDN),
 //  so the guest page never depends on a script host. The security rules only allow published public documents to be read.
 import { CONFIG } from '../config.js';
@@ -43,23 +43,51 @@ async function hero() {
     rows.forEach(r => { const img = document.querySelectorAll('.hero-slide img')[r.slot - 1]; if (img) img.src = pub(r.image_path); });
   } catch { /* keep default images */ }
 }
-// ---- faculty: first four in the first row, the rest behind the original "More Faculty" card. Order = the position set by the admin.
-async function faculty() {
-  try {
-    const rows = await run('site_faculty', [eq('is_published', true)], [['position', 'ASCENDING']], 100);
-    const e = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-    const card = r => `<article class="faculty-card"><img alt="${e(r.name)}" src="${e(pub(r.photo_path) || 'images/more-faculty.png')}" /><strong>${e(r.short_name || r.name)}</strong><small>${e(r.designation || 'Faculty')}</small></article>`;
-    const grid = document.getElementById('faculty-public-grid');   // the detailed "Our Faculty" section: same order, same cards
-    if (grid) grid.innerHTML = rows.map((r, i) => `<article class="faculty-public-card${i === 0 && /director/i.test(r.designation) ? ' director-faculty-card' : ''}"><div class="faculty-photo"><img src="${e(pub(r.photo_path) || 'images/more-faculty.png')}" alt="${e(r.name)}"></div><div class="faculty-body"><h3>${e(r.name)}</h3><small>${e(r.designation || 'Faculty')}</small>${r.subjects ? `<span><i class="fa-solid fa-book"></i> ${e(r.subjects)}</span>` : ''}${r.classes_text ? `<span><i class="fa-solid fa-school"></i> ${e(r.classes_text)}</span>` : ''}</div></article>`).join('');
-    const main = document.getElementById('home-faculty-row'), more = document.getElementById('more-faculty-list'); if (!main) return;
-    const first = rows.slice(0, 4), rest = rows.slice(4);
-    main.innerHTML = first.map(card).join('') + (rest.length ? `<article class="faculty-card" id="more-faculty-btn" role="button" tabindex="0" aria-expanded="false" style="cursor:pointer"><img alt="More Faculty" src="images/more-faculty.png" /><strong>More Faculty</strong><small>Tap to view</small></article>` : '');
-    more.innerHTML = rest.map(card).join('');
-    const btn = document.getElementById('more-faculty-btn'), toggle = () => { const open = btn.getAttribute('aria-expanded') === 'true'; btn.setAttribute('aria-expanded', String(!open)); more.hidden = open; btn.querySelector('small').textContent = open ? 'Tap to view' : 'Tap to hide'; };
-    btn?.addEventListener('click', toggle); btn?.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(); } });
-  } catch { /* leave the section empty */ }
+// ---- events: cards with swipeable photo albums (added by the admin in Website Events). First row 2 cards (centered), then rows of 3.
+const DEFAULT_EVENTS = [['Sports', 'fa-futbol'], ['Cultural Events', 'fa-masks-theater'], ['Extracurricular', 'fa-puzzle-piece'], ['Crafting', 'fa-scissors'], ['Cooking', 'fa-utensils'], ['Annual Function', 'fa-award']];
+const esc = x => String(x ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function eventCard(ev) {
+  const imgs = (ev.images || []).filter(Boolean);
+  const slides = imgs.length
+    ? imgs.map((p, i) => `<div class="event-slide"><img src="${esc(pub(p))}" alt="${esc(ev.title)} photo ${i + 1}" ${i ? 'loading="lazy"' : ''} draggable="false"></div>`).join('')
+    : `<div class="event-slide placeholder"><i class="fa-solid ${esc(ev.icon || 'fa-images')}" aria-hidden="true"></i></div>`;
+  const sub = esc(ev.description || (imgs.length ? '' : 'Photos coming soon'));
+  return `<article class="event-card reveal" aria-label="${esc(ev.title)}">
+    <div class="event-slider" tabindex="0">${slides}</div>
+    ${imgs.length > 1 ? `<div class="ev-dots">${imgs.map((_, i) => `<i class="${i ? '' : 'on'}"></i>`).join('')}</div>
+    <button class="ev-nav prev" type="button" aria-label="Previous photo" disabled><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="ev-nav next" type="button" aria-label="Next photo"><i class="fa-solid fa-chevron-right"></i></button>` : ''}
+    <div class="event-cap"><div><h3>${esc(ev.title)}</h3>${sub ? `<small>${sub}</small>` : ''}</div>${imgs.length > 1 ? `<span class="event-count">1 / ${imgs.length}</span>` : ''}</div>
+  </article>`;
 }
-toppers(); hero(); faculty();
+function wireSlider(card) {
+  const sl = card.querySelector('.event-slider'), n = card.querySelectorAll('.event-slide').length; if (!sl || n < 2) return;
+  const dots = [...card.querySelectorAll('.ev-dots i')], prev = card.querySelector('.ev-nav.prev'), next = card.querySelector('.ev-nav.next'), count = card.querySelector('.event-count');
+  const idx = () => Math.max(0, Math.min(n - 1, Math.round(sl.scrollLeft / sl.clientWidth)));
+  const sync = () => { const i = idx(); dots.forEach((d, k) => d.classList.toggle('on', k === i)); prev.disabled = i === 0; next.disabled = i === n - 1; if (count) count.textContent = `${i + 1} / ${n}`; };
+  const go = i => sl.scrollTo({ left: i * sl.clientWidth, behavior: 'smooth' });
+  sl.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
+  prev.addEventListener('click', () => go(idx() - 1)); next.addEventListener('click', () => go(idx() + 1));
+  sl.addEventListener('keydown', e => { if (e.key === 'ArrowRight') { e.preventDefault(); go(idx() + 1); } if (e.key === 'ArrowLeft') { e.preventDefault(); go(idx() - 1); } });
+  // mouse drag (touch screens already swipe natively)
+  let down = null;
+  sl.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse' || e.button !== 0) return; down = { x: e.clientX, left: sl.scrollLeft }; sl.classList.add('grabbing'); sl.setPointerCapture(e.pointerId); });
+  sl.addEventListener('pointermove', e => { if (down) sl.scrollLeft = down.left - (e.clientX - down.x); });
+  const end = () => { if (!down) return; down = null; sl.classList.remove('grabbing'); go(idx()); };
+  sl.addEventListener('pointerup', end); sl.addEventListener('pointercancel', end);
+}
+async function events() {
+  const host = document.getElementById('eventRows'); if (!host) return;
+  let rows = []; try { rows = await run('site_events', [eq('is_published', true)], null, 60); } catch { /* shows the placeholder cards below */ }
+  rows.sort((a, b) => (a.position ?? 999) - (b.position ?? 999));
+  const list = rows.length ? rows : DEFAULT_EVENTS.map(([title, icon]) => ({ title, icon, images: [] }));
+  const chunks = [list.slice(0, 2)]; for (let i = 2; i < list.length; i += 3) chunks.push(list.slice(i, i + 3));
+  host.innerHTML = chunks.filter(c => c.length).map(c => `<div class="event-row">${c.map(eventCard).join('')}</div>`).join('');
+  host.querySelectorAll('.event-card').forEach(wireSlider);
+  if (!('IntersectionObserver' in window)) host.querySelectorAll('.reveal').forEach(x => x.classList.add('in'));
+  else { const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .08 }); host.querySelectorAll('.reveal').forEach(x => io.observe(x)); }
+}
+toppers(); hero(); events();
 
 // ---- 3. already signed in? go straight to the dashboard (same behaviour as the original page)
 if (!location.search.includes('add=1') && localStorage.getItem('bcc-current')) {

@@ -3,7 +3,7 @@ import { fn } from '../shared/api.js';
 import { photo } from '../core/storage.js';
 import { label } from '../core/classes.js';
 import { $, esc, initials, toast } from '../shared/ui.js';
-const { me, content } = await mountShell({ role: 'student', active: 'profile.html', title: 'Profile', subtitle: 'Your personal and academic information' });
+const { me, content } = await mountShell({ role: 'student', active: 'profile.html', title: 'Profile' });
 const s = me.student, u = await photo(s.photo_path);
 const row = ([l, v]) => `<div style="background:var(--yellow-wash);padding:10px 14px;border-radius:12px"><small style="color:var(--muted);text-transform:uppercase;letter-spacing:.4px">${l}</small><div style="font-weight:600">${esc(v || '—')}</div></div>`;
 content.innerHTML = `<section class="card" style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">${u ? `<img src="${u}" alt="" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid var(--yellow)">` : `<span class="avatar" style="width:120px;height:120px;font-size:40px;border:4px solid var(--yellow)">${esc(initials(me.full_name))}</span>`}<div><h2>${esc(me.full_name)}</h2><div style="color:var(--muted)">${esc(label(s.class_no))} · Roll ${esc(s.roll_number || '–')}</div><span class="tag y" style="margin-top:6px">Student ID ${esc(me.login_id)}</span></div></section>

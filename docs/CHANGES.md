@@ -165,3 +165,16 @@ Original upload preserved untouched: `files.zip` (contains `bcc-website.zip`).
 10. The quiz is auto-submitted when a desktop browser tab is left or loses focus. On phones (your decision D5) the screen is kept awake, a glance away of 20 seconds or less is ignored, and the quiz is submitted when the student returns after more than 20 seconds away; the teacher sees how often and how long the page was hidden. Limit: a manual power-button lock longer than 20 seconds cannot be told from an app switch.
 11. Leaderboards and dashboards are precomputed: quiz boards refresh within about a minute of a submission, the staff dashboard is cached 5 minutes, the student dashboard 10 minutes.
 12. The unused per-student fee override table was not carried over (no page ever used it).
+
+
+## Update 2026-11-26: redesign, Events, attendance switch, email
+1. **Welcome page redesigned** (index.html, style.css, script.js; login card styles moved unchanged to login.css). "Our Faculty" removed from the welcome page and its header; header is Home, About Us, Facilities, Results, Events, Contact. Leadership enlarged (Director left, Principal right).
+2. **Events section** on the welcome page: cards with swipeable photo albums; first row 2 cards, then rows of 3. Managed in Admin > Website Events (collection `site_events`, images in Storage `site-public/events`). New Firestore rule for `site_events`.
+3. **Attendance switch**: Admin > Portal Settings (`app_settings/features`) or `CONFIG.ATTENDANCE` in js/config.js ("panel" / "off" / "on"). Off by default. Hides the Attendance and Holidays pages, dashboard numbers, report-card rows, attendance notice. New Firestore rule for `app_settings`. Backend functions unchanged.
+4. **Portal redesign** (css/theme.css, base.css, components.css; font Inter). Page logic unchanged. The live quiz screen uses frozen copies of the old CSS (css/quiz-frozen) and looks exactly as before.
+5. **Contact email** is now bccbirpur@gmail.com (contact card, footer, mailto links).
+6. **login-check.html**: step-by-step login diagnostic (see deploy guide). No login code was changed.
+
+## Update 2026-11-26 (b): palette and text clean-up
+- Exact palette applied to the welcome page and all portal pages: primary yellow #FFE600 (active items, key buttons), soft yellow #FFF9A6 (page background), deep navy #1B1464 (sidebar, headings), black / grey #555555 / #6B7280 text, green #16A34A, red #DC2626. (The deploy guide PDF still says "cream background": the background is now soft yellow.)
+- Extra text removed: page subtitles on every portal page, sidebar tagline and motivational card, explanatory paragraphs and notes (fees, holidays, teachers, settings, marks, events, attendance switch), long form intros, and the longer welcome-page descriptions. Confirmation warnings that protect against mistakes (record payment, reset password, archive exam, import format) were kept.

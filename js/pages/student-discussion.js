@@ -2,7 +2,7 @@ import { mountShell } from '../shared/shell.js';
 import { col, query, where, orderBy, limit, onSnapshot } from '../core/db.js';
 import { fn } from '../shared/api.js';
 import { $, esc, empty, toast } from '../shared/ui.js';
-const { me, content } = await mountShell({ role: 'student', active: 'discussion.html', title: 'Group Discussion', subtitle: 'Talk with your classmates and teachers' });
+const { me, content } = await mountShell({ role: 'student', active: 'discussion.html', title: 'Group Discussion' });
 content.innerHTML = `<section class="card"><div id="msgs" style="max-height:60vh;overflow:auto;margin-bottom:12px"></div><div style="display:flex;gap:8px"><input class="input" id="nm" maxlength="600" placeholder="Write a message…"><button class="btn y" id="sd">Send</button></div></section>`;
 const draw = rows => { $('#msgs').innerHTML = rows.map(m => `<div style="padding:8px 0;border-bottom:1px solid var(--line)"><b style="color:${m.user_id === me.id ? 'var(--blue)' : 'var(--navy)'}">${esc(m.author_name)}</b> ${m.author_role !== 'student' ? `<span class="tag y">${esc(m.author_role)}</span>` : ''}<small style="color:var(--muted)"> ${new Date(m.created_at).toLocaleString('en-IN')}</small><div>${esc(m.body)}</div></div>`).join('') || empty('fa-comments', 'No messages yet. Start the conversation.'); $('#msgs').scrollTop = 1e9; };
 const send = async () => { const b = $('#nm').value.trim(); if (!b) return; $('#nm').value = ''; try { await fn('postDiscussionMessage', { scope: 'class', class_no: me.student.class_no, body: b }); } catch (error) { toast(error.message, 'err'); } };

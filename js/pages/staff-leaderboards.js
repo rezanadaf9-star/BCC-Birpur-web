@@ -6,7 +6,7 @@ import { myClasses, classCards, label } from '../shared/classes-ui.js';
 import { podium } from '../shared/podium.js';
 import { $, $$, esc, empty, skeleton, initials } from '../shared/ui.js';
 const role = document.documentElement.dataset.role;
-const { me, content } = await mountShell({ role, active: 'leaderboards.html', title: 'Leaderboards', subtitle: 'Latest exam, cumulative academic and quiz rankings by class' });
+const { me, content } = await mountShell({ role, active: 'leaderboards.html', title: 'Leaderboards' });
 const P = new URLSearchParams(location.search), classNo = P.get('class'); const num = v => Math.round(Number(v) * 100) / 100;
 if (!classNo) content.innerHTML = `<section class="card"><div class="card-head"><h3>Select a class</h3></div>${classCards(await myClasses(me), c => `?class=${c.class_no}`)}</section>`;
 else {

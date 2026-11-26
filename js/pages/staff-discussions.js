@@ -3,7 +3,7 @@ import { db, doc, getDoc, getDocs, collectionGroup, query, where, orderBy, limit
 import { fn } from '../shared/api.js';
 import { $, $$, esc, modal, toast, empty, skeleton } from '../shared/ui.js';
 const role = document.documentElement.dataset.role, isAdmin = role === 'admin';
-const { me, content } = await mountShell({ role, active: 'discussions.html', title: 'Discussions', subtitle: 'Student doubts under lectures' });
+const { me, content } = await mountShell({ role, active: 'discussions.html', title: 'Discussions' });
 content.innerHTML = `<section class="card"><div class="card-head"><h3>Lecture discussions</h3></div><div id="list">${skeleton(4)}</div></section>`;
 async function load() {
   const cq = me.role === 'admin' ? query(collectionGroup(db, 'comments'), orderBy('created_at', 'desc'), limit(300)) : query(collectionGroup(db, 'comments'), where('class_no', 'in', (me.teacher?.assignments || []).map(a => a.class_no).slice(0, 30)), orderBy('created_at', 'desc'), limit(300));

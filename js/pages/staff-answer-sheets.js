@@ -7,7 +7,7 @@ import { myClasses, classCards, label } from '../shared/classes-ui.js';
 import { formModal } from '../shared/forms.js';
 import { $, $$, esc, toast, empty, skeleton, initials } from '../shared/ui.js';
 const role = document.documentElement.dataset.role, isAdmin = role === 'admin';
-const { me, content } = await mountShell({ role, active: 'answer-sheets.html', title: 'Answer Sheets', subtitle: 'Upload scanned answer sheets for students' });
+const { me, content } = await mountShell({ role, active: 'answer-sheets.html', title: 'Answer Sheets' });
 const P = new URLSearchParams(location.search), classNo = P.get('class'), stuId = P.get('student');
 if (!classNo) content.innerHTML = `<section class="card"><div class="card-head"><h3>Select a class</h3></div>${classCards(await myClasses(me), c => `?class=${c.class_no}`)}</section>`;
 else if (!stuId) {

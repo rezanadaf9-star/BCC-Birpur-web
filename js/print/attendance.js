@@ -1,11 +1,13 @@
 import { requireRole, ROOT } from '../core/auth.js';
+import { attendanceEnabled } from '../core/flags.js';
 import { fn } from '../shared/api.js';
 import { roman } from '../core/classes.js';
 const P = new URLSearchParams(location.search), $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const show = m => { $('loading').textContent = m; };
 try {
-  const me = await requireRole(['teacher', 'admin']);       // only staff issue attendance notices, one student at a time
+  const me = await requireRole(['teacher', 'admin']);
+  if (!(await attendanceEnabled())) { show('Attendance is switched off for this centre.'); throw new Error('stop'); }       // only staff issue attendance notices, one student at a time
   const student = P.get('student'), month = P.get('month') || new Date().toISOString().slice(0, 7);
   if (!student) { show('Open this notice for one student from Print Centre or from the Attendance page. It is not printed for a whole class.'); throw new Error('stop'); }
   let d, no; try { d = await fn('attendanceNotice', { student, month }); no = d.report_no; } catch (e) { show(e.message); throw new Error('stop'); }

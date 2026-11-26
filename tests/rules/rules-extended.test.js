@@ -10,7 +10,7 @@ const NOSESS = { role: 'student', classNo: 10 };       // a token that has no re
 before(async () => { env = await initializeTestEnvironment({ projectId: 'bcc-rules-ext', firestore: { rules: fs.readFileSync('firestore.rules', 'utf8'), host: '127.0.0.1', port: 8080 }, storage: { rules: fs.readFileSync('storage.rules', 'utf8'), host: '127.0.0.1', port: 9199 } }); });
 after(async () => env.cleanup());
 beforeEach(async () => { await env.clearFirestore(); await env.withSecurityRulesDisabled(async c => { const db = c.firestore();
-  await setDoc(doc(db, 'classes/10'), { class_no: 10, features: { quizzes: true, fees: true, alumni: true, notes: true, announcements: true, group_discussion: true } });
+  await setDoc(doc(db, 'classes/10'), { class_no: 10, features: { quizzes: true, fees: true, alumni: true, notes: true, announcements: true, group_discussion: true, answer_sheets: true } });
   await setDoc(doc(db, 'users/s10/sessions/s'), { revoked_at: null }); await setDoc(doc(db, 'users/s11/sessions/s'), { revoked_at: 'x' }); await setDoc(doc(db, 'users/kid/sessions/s'), { revoked_at: null }); await setDoc(doc(db, 'users/par/sessions/s'), { revoked_at: null }); await setDoc(doc(db, 'users/adm/sessions/s'), { revoked_at: null });
   await setDoc(doc(db, 'super15_members/active1'), { is_active: true }); await setDoc(doc(db, 'super15_members/paused1'), { is_active: false });
   await setDoc(doc(db, 'super15_materials/m1'), { kind: 'material', title: 'x' });
@@ -60,5 +60,26 @@ describe('storage', () => {
   it('a student cannot upload notes', () => assertFails(uploadBytes(ref(st('s10', S10), 'bcc-content/notes/10/b.pdf'), new Uint8Array([1]), { contentType: 'application/pdf' })));
   it('a teacher of the class can upload a PDF; wrong type is refused', async () => { await assertSucceeds(uploadBytes(ref(st('t', T10), 'bcc-content/notes/10/c.pdf'), new Uint8Array([1]), { contentType: 'application/pdf' })); await assertFails(uploadBytes(ref(st('t', T10), 'bcc-content/notes/10/c.exe'), new Uint8Array([1]), { contentType: 'application/x-msdownload' })); });
   it('Super 15 files: paused member refused', async () => { await env.withSecurityRulesDisabled(async c => uploadBytes(ref(c.storage(), 'bcc-content/super15/x.pdf'), new Uint8Array([1]), { contentType: 'application/pdf' })); await assertFails(getBytes(ref(st('paused1', S10), 'bcc-content/super15/x.pdf'))); });
+  it('Super 15: teacher can upload PDF and Office formats', async () => {
+    const files = [
+      ['a.pdf', 'application/pdf'],
+      ['b.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+      ['c.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+      ['d.pptx', 'application/vnd.openxmlformats-officedocument.presentationml.presentation']
+    ];
+    for (const [name, type] of files) {
+      await assertSucceeds(uploadBytes(ref(st('t', T10), `bcc-content/super15/${name}`), new Uint8Array([1]), { contentType: type }));
+    }
+  });
+
+  it('Super 15: admin can upload and student cannot', async () => {
+    await assertSucceeds(uploadBytes(ref(st('adm', ADM), 'bcc-content/super15/admin.pdf'), new Uint8Array([1]), { contentType: 'application/pdf' }));
+    await assertFails(uploadBytes(ref(st('s10', S10), 'bcc-content/super15/student.pdf'), new Uint8Array([1]), { contentType: 'application/pdf' }));
+  });
+
+  it('Super 15: unsupported MIME types are rejected', async () => {
+    await assertFails(uploadBytes(ref(st('t', T10), 'bcc-content/super15/bad.exe'), new Uint8Array([1]), { contentType: 'application/x-msdownload' }));
+    await assertFails(uploadBytes(ref(st('t', T10), 'bcc-content/super15/bad.zip'), new Uint8Array([1]), { contentType: 'application/zip' }));
+  });
   it('a student can upload only their own profile photo', async () => { await assertSucceeds(uploadBytes(ref(st('s10', S10), 'student-photos/s10.jpg'), new Uint8Array([1]), { contentType: 'image/jpeg' })); await assertFails(uploadBytes(ref(st('s10', S10), 'student-photos/other.jpg'), new Uint8Array([1]), { contentType: 'image/jpeg' })); });
 });

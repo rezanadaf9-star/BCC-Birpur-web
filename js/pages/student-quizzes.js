@@ -1,7 +1,7 @@
 import { mountShell } from '../shared/shell.js';
 import { rows as qrows, col, query, where, orderBy, collectionGroup, getDocs, db } from '../core/db.js';
 import { $, $$, esc, empty, skeleton } from '../shared/ui.js';
-const { me, content } = await mountShell({ role: 'student', active: 'quizzes.html', title: 'Quizzes', subtitle: 'Weekly, monthly and chapter quizzes' });
+const { me, content } = await mountShell({ role: 'student', active: 'quizzes.html', title: 'Quizzes' });
 content.innerHTML = `<section class="card" id="v">${skeleton(4)}</section><p><a class="btn ghost sm" href="leaderboard.html"><i class="fa-solid fa-trophy"></i>Quiz leaderboard</a></p>`;
 const [qz, at] = await Promise.all([qrows(query(col('quizzes'), where('class_no', '==', me.student.class_no), where('is_active', '==', true), orderBy('created_at', 'desc'))), getDocs(query(collectionGroup(db, 'attempts'), where('student_id', '==', me.id))).then(r => r.docs.map(d => ({ id: d.ref.parent.parent.id, ...d.data() })))]);
 const now = Date.now(), done = Object.fromEntries((at || []).map(a => [a.quiz_id, a]));

@@ -1,26 +1,31 @@
-/* BCC theme tokens. Change colours here only. */
+/* BCC theme tokens. Change colours here only.
+   Palette (as specified): primary yellow #FFE600 = active items and key buttons; soft yellow #FFF9A6 = page background;
+   deep navy #1B1464 = sidebar and headings; text black #000000, grey #555555 / #6B7280; success green #16A34A; error red #DC2626. */
 :root{
-  --navy:#1b1464; --navy-700:#150f4d; --navy-500:#2c2486; --navy-100:#e4e2f5;
-  --yellow:#ffe600; --yellow-600:#e6cf00; --yellow-soft:#fff9a6; --yellow-wash:#fffcd1;
-  --white:#fff; --black:#111018; --grey-900:#2a2838; --grey-700:#55536a; --grey-500:#8a889c;
-  --grey-300:#cfcddc; --grey-200:#e6e5ee; --grey-100:#f3f2f8;
-  --green:#12a150; --green-soft:#dcf5e6; --red:#d92d3a; --red-soft:#fde3e5;
+  --navy:#1B1464; --navy-700:#150f4d; --navy-500:#2c2486; --navy-100:#e9e7f7;
+  --yellow:#FFE600; --yellow-600:#e6cf00; --yellow-soft:#FFF9A6; --yellow-wash:#fff8cf;
+  --white:#FFFFFF; --black:#000000; --grey-900:#2a2838; --grey-700:#555555; --grey-500:#6B7280;
+  --grey-300:#cfcddc; --grey-200:#e6e5ee; --grey-100:#f4f3f9;
+  --green:#16A34A; --green-soft:#dcf5e6; --red:#DC2626; --red-soft:#fde3e5;
   --blue:#2563eb; --blue-soft:#e0eaff; --orange:#f08a00; --orange-soft:#ffeccc;
   --gold:#e9b400; --silver:#aab2c0; --bronze:#c27a3a;
-  --bg:var(--yellow-soft); --card:var(--white); --text:var(--navy); --muted:var(--grey-700); --line:var(--grey-200);
-  --r-sm:8px; --r-md:14px; --r-lg:20px; --r-pill:999px;
-  --shadow-1:0 1px 2px rgba(27,20,100,.08),0 2px 8px rgba(27,20,100,.06);
-  --shadow-2:0 8px 28px rgba(27,20,100,.16);
-  --sidebar-w:264px; --header-h:68px;
-  --font:'Poppins',system-ui,-apple-system,'Segoe UI','Noto Sans Devanagari',sans-serif;
+  --bg:#FFF9A6; --card:var(--white); --text:#000000; --heading:var(--navy); --muted:#555555; --line:rgba(27,20,100,.13);
+  --r-sm:8px; --r-md:10px; --r-lg:14px; --r-pill:999px;
+  --shadow-1:0 1px 2px rgba(27,20,100,.05);
+  --shadow-2:0 18px 44px -14px rgba(27,20,100,.30);
+  --sidebar-w:256px; --header-h:68px;
+  --font:'Inter',system-ui,-apple-system,'Segoe UI','Noto Sans Devanagari',sans-serif;
+  --font-display:'Instrument Serif','Iowan Old Style',Georgia,serif;
   --font-hand:'Caveat','Segoe Script',cursive;
+  /* spacing scale (8px base) */
+  --sp-1:8px; --sp-2:16px; --sp-3:24px; --sp-4:32px;
 }
 
 /* Dark mode: toggled by the sun/moon button (stored in localStorage "bcc-theme"). */
 [data-theme="dark"]{
-  --bg:#0e0b2b; --card:#181347; --text:#f2f1ff; --muted:#b5b2d8; --line:#2b2570;
+  --heading:#f2f1ff; --bg:#0e0b2b; --card:#16113f; --text:#f2f1ff; --muted:#b5b2d8; --line:#2a2470;
   --grey-100:#211b5c; --grey-200:#2b2570; --grey-300:#40399a; --grey-500:#9c99c8; --grey-700:#c0bde0;
   --navy-100:#2a2475; --yellow-wash:#221c58; --green-soft:#123a2a; --red-soft:#4a1d27; --blue-soft:#1d2d5e; --orange-soft:#4a3414;
-  --shadow-1:0 1px 2px rgba(0,0,0,.4),0 2px 10px rgba(0,0,0,.25); --shadow-2:0 10px 30px rgba(0,0,0,.5);
+  --shadow-1:0 1px 2px rgba(0,0,0,.35); --shadow-2:0 18px 44px -14px rgba(0,0,0,.6);
   color-scheme:dark;
 }

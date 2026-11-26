@@ -7,8 +7,7 @@
 //   stats/fees                                 billed / paid totals and money collected per month, for the dashboard (no scanning)
 //   fee_settings/main                          UPI id, note, QR path
 const { onCall } = require('firebase-functions/v2/https');
-const { admin, db, HttpsError, callOpts, nowIso, pad2, int, str, isoDate, bad, requireSession, audit, currentSession, istToday } = require('./common');
-const FieldValue = admin.firestore.FieldValue;
+const { admin, db, FieldValue, HttpsError, callOpts, nowIso, pad2, int, str, isoDate, bad, requireSession, audit, currentSession, istToday } = require('./common');
 const cents = x => Math.round(Number(x) * 100) / 100;
 const slug = s => String(s).trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'fee';
 const isMonth = s => /^\d{4}-\d{2}$/.test(s || '');

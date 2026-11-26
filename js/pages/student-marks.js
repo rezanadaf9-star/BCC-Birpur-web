@@ -4,7 +4,7 @@ import { one } from '../core/db.js';
 import { photo } from '../core/storage.js';
 import { $, $$, esc, empty, skeleton, initials } from '../shared/ui.js';
 import { podium } from '../shared/podium.js';
-const { me, content } = await mountShell({ role: 'student', active: 'marks.html', title: 'Academic Performance', subtitle: 'Declared results and class ranking' });
+const { me, content } = await mountShell({ role: 'student', active: 'marks.html', title: 'Academic Performance' });
 let tab = new URLSearchParams(location.search).get('tab') || 'results';
 content.innerHTML = `<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" data-t="results">My results</button><button class="btn sm ghost" data-t="exam">Exam leaderboard</button><button class="btn sm ghost" data-t="cum">Cumulative leaderboard</button><a class="btn sm ghost" href="leaderboard.html">Quiz leaderboard</a></div><div id="v">${skeleton(4)}</div>`;
 const num = v => Math.round(Number(v) * 100) / 100;
@@ -28,7 +28,7 @@ async function board(cum) {
   const items = []; for (const x of L.slice(0, 3)) items.push({ name: x.name, pct: x.pct, score: `${num(x.om)} / ${num(x.fm)}`, me: x.is_me, avatar: await av(x, Number(x.rank) === 1 ? 80 : 60), rank: Number(x.rank) });
   const top = L.slice(0, 10), mine = L.find(x => x.is_me), below = mine && !top.includes(mine), rows = [];
   for (const x of [...top, ...(below ? [mine] : [])]) rows.push(`${x === mine && below ? '<tr><td colspan="6" style="text-align:center;color:var(--muted)">⋮</td></tr>' : ''}<tr style="${x.is_me ? 'background:var(--yellow-wash);font-weight:600' : ''}"><td>#${x.rank}</td><td><div style="display:flex;gap:10px;align-items:center">${await av(x, 34)}${esc(x.name)} ${x.is_me ? '<span class="tag y">YOU</span>' : ''}</div></td><td>Class ${x.class_no > 0 ? x.class_no : ''}</td><td>${num(x.om)}</td><td>${num(x.fm)}</td><td>${num(x.pct)}%</td></tr>`);
-  $('#v').innerHTML = `<section class="card"><div class="card-head"><div><h3>${cum ? 'Cumulative academic leaderboard' : 'Exam leaderboard (this exam only)'}</h3><small>${cum ? 'All declared exams up to the selected one are added together.' : 'Only the marks of the selected exam count.'}</small></div><select class="input" id="exsel" style="width:auto;min-height:38px">${data.exams.map(e => `<option value="${e.n}" ${e.n === data.n ? 'selected' : ''}>${esc(e.name)}</option>`).join('')}</select></div>${podium(items)}
+  $('#v').innerHTML = `<section class="card"><div class="card-head"><div><h3>${cum ? 'Cumulative academic leaderboard' : 'Exam leaderboard (this exam only)'}</h3></div><select class="input" id="exsel" style="width:auto;min-height:38px">${data.exams.map(e => `<option value="${e.n}" ${e.n === data.n ? 'selected' : ''}>${esc(e.name)}</option>`).join('')}</select></div>${podium(items)}
     <div class="table-wrap"><table class="t"><thead><tr><th>Rank</th><th>Student</th><th>Class</th><th>Marks obtained</th><th>Full marks</th><th>%</th></tr></thead><tbody>${rows.join('')}</tbody></table></div></section>`;
   $('#exsel').onchange = e => { exN = Number(e.target.value); $('#v').innerHTML = skeleton(4); board(cum); };
 }

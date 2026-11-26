@@ -3,7 +3,7 @@ import { rows as qrows, col, query, where, orderBy } from '../core/db.js';
 import { signed } from '../core/storage.js';
 import { CONFIG } from '../config.js';
 import { $, esc, empty, skeleton } from '../shared/ui.js';
-const { content } = await mountShell({ role: 'student', active: 'alumni.html', title: 'Alumni Network', subtitle: 'Where our students go next' });
+const { content } = await mountShell({ role: 'student', active: 'alumni.html', title: 'Alumni Network' });
 content.innerHTML = skeleton(4);
 const data = await qrows(query(col('alumni'), where('is_published', '==', true), orderBy('batch_year', 'desc'), orderBy('name')));
 const urls = {}; await Promise.all(data.filter(a => a.photo_path).map(async a => { urls[a.photo_path] = await signed(a.photo_path, 3600, 'alumni-photos'); }));

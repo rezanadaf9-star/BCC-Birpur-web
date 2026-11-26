@@ -6,7 +6,7 @@ import { formModal } from '../shared/forms.js';
 import { $, $$, esc, toast, empty, skeleton, modal, fmtIST, istInputToIso, isoToIstInput } from '../shared/ui.js';
 import { readSheet } from '../shared/sheet.js';
 const role = document.documentElement.dataset.role, isAdmin = role === 'admin';
-const { me, content } = await mountShell({ role, active: 'quizzes.html', title: 'Quizzes', subtitle: 'Create quizzes and add questions' });
+const { me, content } = await mountShell({ role, active: 'quizzes.html', title: 'Quizzes' });
 const P = new URLSearchParams(location.search), classNo = P.get('class'), quizId = P.get('quiz');
 const HEAD = ['question', 'option_a', 'option_b', 'option_c', 'option_d', 'correct', 'explanation', 'question_hi', 'option_a_hi', 'option_b_hi', 'option_c_hi', 'option_d_hi'];
 

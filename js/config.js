@@ -15,6 +15,9 @@ export const CONFIG = {
   APP_CHECK_SITE_KEY: "",                       // reCAPTCHA v3 site key (free); leave empty until App Check is set up (docs/SETUP.md)
   AUTH_EMAIL_DOMAIN: "students.bcc-portal.invalid", // internal namespace only, not a real mailbox. Must match functions/.env
   ADMIN_EMAIL: "zaq00850@gmail.com",     // typing the ID  ADMIN  on the Teacher card signs in this account (same email you gave bootstrap.js)
+  // Attendance feature switch. "panel" = follow the admin panel > Portal Settings (default). "off" = hard-disable for everyone.
+  // "on" = hard-enable for everyone. To bring attendance back from code, change "off" to "panel" or "on". See js/core/flags.js.
+  ATTENDANCE: "panel",
   CENTRE_NAME: "Brilliant Coaching Centre",
   CENTRE_SHORT: "BCC",
   CENTRE_ADDRESS: "Kairi Birpur",

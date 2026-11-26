@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>BCC login check</title>
+<link rel="icon" href="favicon.ico">
+<style>
+  :root{--navy:#061d49;--blue:#0b428f;--yellow:#ffd400;--line:#dce4ee;--muted:#4d6080}
+  *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:#f6f8fc;color:#102c58;line-height:1.55}
+  main{max-width:640px;margin:40px auto;padding:0 20px}h1{font-size:1.6rem;margin:0 0 4px;color:var(--navy)}p.sub{margin:0 0 24px;color:var(--muted)}
+  form,.out{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:18px}
+  label{display:block;font-weight:600;font-size:14px;margin:0 0 6px}input,select{width:100%;min-height:44px;border:1px solid #b9c5d6;border-radius:10px;padding:0 12px;font:inherit;margin-bottom:14px}
+  button{min-height:46px;padding:0 22px;border:0;border-radius:999px;background:var(--navy);color:#fff;font-weight:700;font:inherit;cursor:pointer}button:disabled{opacity:.5}
+  ol{list-style:none;margin:0;padding:0}li{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}li:last-child{border:0}
+  .ic{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:800;color:#fff;background:#b9c5d6}.ok .ic{background:#12a150}.bad .ic{background:#d92d3a}
+  small{display:block;color:var(--muted)}.hint{margin-top:6px;padding:10px 12px;background:#fff6bf;border-radius:10px;font-size:14px;color:#102c58}
+  code{background:#eef2f8;padding:1px 6px;border-radius:6px;font-size:13px}
+</style>
+</head>
+<body>
+<main>
+  <h1>BCC login check</h1>
+  <p class="sub">Tests each step of signing in and tells you exactly where it stops. It signs you out again at the end and changes nothing. You can delete this file after use.</p>
+  <form id="f">
+    <label for="portal">Login card</label>
+    <select id="portal"><option value="teacher">Teacher card (use this for Admin)</option><option value="student">Student card</option></select>
+    <label for="id">ID</label><input id="id" placeholder="admin  /  teacher email  /  student ID" autocomplete="off">
+    <label for="pw">Password</label><input id="pw" type="password" autocomplete="off">
+    <button id="go">Run check</button>
+  </form>
+  <div class="out" id="out" hidden><ol id="steps"></ol></div>
+</main>
+<script type="module">
+import { CONFIG } from './js/config.js';
+import * as FB from './js/core/firebase-client.js';
+import { loginEmail } from './js/core/auth.js';
+import { signInWithEmailAndPassword, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+import { httpsCallable } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-functions.js';
+const $ = s => document.querySelector(s), steps = $('#steps');
+const add = (title, state, detail = '', hint = '') => { const li = document.createElement('li'); li.className = state; li.innerHTML = `<span class="ic">${state === 'ok' ? '✓' : state === 'bad' ? '✕' : '…'}</span><div><b>${title}</b>${detail ? `<small>${detail}</small>` : ''}${hint ? `<div class="hint">${hint}</div>` : ''}</div>`; steps.append(li); return li; };
+$('#f').onsubmit = async e => {
+  e.preventDefault(); const btn = $('#go'); btn.disabled = true; steps.innerHTML = ''; $('#out').hidden = false;
+  const portal = $('#portal').value, id = $('#id').value.trim(), pw = $('#pw').value;
+  add('Page address', location.origin.startsWith('http') ? 'ok' : 'bad', location.origin, location.origin.startsWith('http') ? '' : 'Open this page from your website address (GitHub Pages or Firebase Hosting), not from a file on your computer.');
+  let email; try { email = loginEmail(portal, id); add('ID turned into the sign-in e-mail', 'ok', id.toUpperCase() === 'ADMIN' ? `ADMIN → ${email}` : email); } catch (err) { add('ID turned into the sign-in e-mail', 'bad', err.message); btn.disabled = false; return; }
+  FB.useSlot(FB.newSlotName(), false); const slot = FB.slot;
+  try { await signInWithEmailAndPassword(FB.auth, email, pw); add('Firebase sign-in (e-mail + password)', 'ok'); }
+  catch (err) { add('Firebase sign-in (e-mail + password)', 'bad', err.code || err.message,
+    /invalid-credential|wrong-password|user-not-found|invalid-email/.test(err.code || '') ? `Firebase has no account with this e-mail and password. For admin, the account is <code>${CONFIG.ADMIN_EMAIL}</code>: its password is the one used in <code>node scripts/bootstrap.js</code> (or reset it in Firebase console > Authentication > Users).`
+    : /operation-not-allowed/.test(err.code || '') ? 'Turn on Email/Password in Firebase console > Authentication > Sign-in method.'
+    : /unauthorized-domain/.test(err.code || '') ? `Add <code>${location.hostname}</code> in Firebase console > Authentication > Settings > Authorized domains.`
+    : /too-many-requests/.test(err.code || '') ? 'Too many attempts. Wait a few minutes, then try again.' : /network/.test(err.code || '') ? 'Network problem. Check the internet connection.' : ''); btn.disabled = false; return; }
+  const uid = FB.auth.currentUser.uid; let me = null;
+  try { const s = await getDoc(doc(FB.db, 'users', uid)); me = s.exists() ? s.data() : null; }
+  catch (err) { add('Reading the BCC profile', 'bad', err.code || err.message, 'Firestore rules may not be deployed. Run <code>firebase deploy --only firestore</code>.'); }
+  if (!me) add('BCC profile found (users/' + uid.slice(0, 6) + '…)', 'bad', 'No profile document for this login.', 'For admin, run <code>node scripts/bootstrap.js ' + CONFIG.ADMIN_EMAIL + ' "password"</code> once (docs/SETUP.md, Step 8). For students/teachers, create them from Admin > Admission / Teachers.');
+  else {
+    add('BCC profile found', 'ok', `role: ${me.role}, active: ${me.is_active !== false}`);
+    const okRole = portal === 'teacher' ? ['teacher', 'admin'].includes(me.role) : me.role === 'student';
+    add('Role matches the login card', okRole ? 'ok' : 'bad', okRole ? '' : `This account is "${me.role}" but you used the ${portal} card.`, okRole ? '' : 'Admins and teachers use the Teacher card. Students use the Student card.');
+  }
+  const wait = add('Server session (Cloud Function registerSession)', 'wait', 'calling…'); let reg = null;
+  try { reg = (await httpsCallable(FB.functions, 'registerSession')({ platform: 'web', deviceLabel: 'login-check' })).data; wait.className = 'ok'; wait.querySelector('.ic').textContent = '✓'; wait.querySelector('small').textContent = 'responded'; }
+  catch (err) { wait.className = 'bad'; wait.querySelector('.ic').textContent = '✕'; const code = err.code || '', msg = err.message || '';
+    wait.querySelector('small').textContent = code + (msg ? ' · ' + msg : '');
+    const h = document.createElement('div'); h.className = 'hint';
+    h.innerHTML = /not-found|unavailable|internal|failed-precondition|unauthenticated|permission-denied/.test(code + msg) && /signBlob|iam|Token Creator|sign/i.test(msg) ? 'The function cannot create login tokens. In Google Cloud console > IAM, give <b>Service Account Token Creator</b> to <code>' + CONFIG.FIREBASE.messagingSenderId + '-compute@developer.gserviceaccount.com</code> (and to the App Engine default account), then try again.'
+      : /not-found/.test(code) ? 'The function <code>registerSession</code> is not deployed in region <code>' + CONFIG.FUNCTIONS_REGION + '</code>. Run <code>firebase deploy --only functions</code>.'
+      : /internal/.test(code) ? 'The function exists but failed (or the browser was blocked by CORS). Check: (1) <code>functions/.env</code> ALLOWED_ORIGINS contains <code>' + location.origin + '</code>, then redeploy functions; (2) Google Cloud console > IAM: the account <code>' + CONFIG.FIREBASE.messagingSenderId + '-compute@developer.gserviceaccount.com</code> needs the role <b>Service Account Token Creator</b>; (3) Firebase console > Functions > Logs for the exact error.'
+      : 'Open Firebase console > Functions > Logs and look at the newest error for registerSession.';
+    wait.firstElementChild.nextElementSibling.append(h); }
+  if (reg) {
+    try { await signInWithCustomToken(FB.auth, reg.customToken); add('Session token accepted', 'ok'); add('RESULT', 'ok', 'Login works for this account. You can use the normal login card.'); }
+    catch (err) { add('Session token accepted', 'bad', err.code || err.message); }
+    try { await httpsCallable(FB.functions, 'logoutSession')({}); } catch {}
+  }
+  try { await FB.auth.signOut(); } catch {} await FB.dropSlot(slot); btn.disabled = false;
+};
+</script>
+</body>
+</html>

@@ -12,13 +12,19 @@ exports.registerSession = onCall(hotOpts, async request => {
   if (!request.auth) throw new HttpsError('unauthenticated', 'Please sign in.');
   const uid = request.auth.uid;
   const platform = request.data && request.data.platform;
+  const portal = request.data && request.data.portal;
   if (!PLATFORMS.includes(platform)) throw bad('Unsupported platform.');
+  if (!['student', 'teacher'].includes(portal)) throw bad('Unsupported login portal.');
   const label = String((request.data && request.data.deviceLabel) || '').slice(0, 120);
 
   const userRef = db.doc(`users/${uid}`);
   const userSnap = await userRef.get();
   if (!userSnap.exists) throw new HttpsError('not-found', 'BCC profile not found.');
   const u = userSnap.data();
+  const portalRoleOk = portal === 'teacher'
+    ? ['teacher', 'admin'].includes(u.role)
+    : u.role === portal;
+  if (!portalRoleOk) throw new HttpsError('permission-denied', 'This account is not registered for this login portal.');
   if (u.is_active === false) throw new HttpsError('permission-denied', 'This account is paused. Please contact the centre.');
   const limit = SESSION_LIMITS[u.role] || 2;
 
@@ -37,7 +43,18 @@ exports.registerSession = onCall(hotOpts, async request => {
   // housekeeping: forget sessions that were closed more than 30 days ago, so the folder never grows without limit
   try { const old = await sessionsCol.where('revoked_at', '<', new Date(Date.now() - 30 * 864e5).toISOString()).limit(20).get(); if (!old.empty) { const b = db.batch(); old.forEach(d => b.delete(d.ref)); await b.commit(); } } catch (e) { console.warn('session prune skipped', e.message); }
   const customToken = await auth.createCustomToken(uid, { ...claimsFromUser(u), bsid: newRef.id });
-  return { customToken, sessionId: newRef.id, replaced_sessions: replaced, allowed_sessions: limit };
+  const profile = {
+    role: u.role,
+    full_name: u.full_name,
+    login_id: u.login_id,
+    is_active: u.is_active,
+    photo_path: u.photo_path || null,
+    last_notif_seen_at: u.last_notif_seen_at || null,
+    student: u.student || null,
+    teacher: u.teacher || null,
+    parent: u.parent || null,
+  };
+  return { customToken, sessionId: newRef.id, replaced_sessions: replaced, allowed_sessions: limit, profile };
 });
 
 /** Sign out this device only. */

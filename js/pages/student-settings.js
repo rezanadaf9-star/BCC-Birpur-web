@@ -5,11 +5,11 @@ import * as FB from '../core/firebase-client.js';
 import { pushSupported, pushEnabled, enablePush, disablePush } from '../core/push.js';
 import { logout } from '../core/auth.js';
 import { $, $$, esc, toast, fmtIST } from '../shared/ui.js';
-const { content } = await mountShell({ role: 'student', active: 'settings.html', title: 'Settings', subtitle: 'Appearance and password' });
+const { content } = await mountShell({ role: 'student', active: 'settings.html', title: 'Settings' });
 content.innerHTML = `<section class="card" style="max-width:520px"><div class="card-head"><h3>Change password</h3></div><div style="display:grid;gap:12px"><input class="input" id="p1" type="password" placeholder="New password (8+ characters)" autocomplete="new-password"><input class="input" id="p2" type="password" placeholder="Repeat new password" autocomplete="new-password"><p id="m" style="color:var(--red);font-size:13px;min-height:18px"></p><button class="btn y" id="go">Update password</button></div></section>
-  <section class="card" style="max-width:520px"><div class="card-head"><h3>Appearance</h3></div><p style="color:var(--muted)">Use the sun/moon button at the top of any page to switch between light and dark mode.</p></section>
-  <section class="card" style="max-width:720px" id="devices"><div class="card-head"><div><h3>Active devices</h3><small>This account can be open on 2 browsers and 2 phones at the same time (for example a student and a parent).</small></div></div><div id="dv">Loading…</div></section>
-  <section class="card" style="max-width:520px" id="pushc" hidden><div class="card-head"><h3>Notifications on this device</h3></div><p style="color:var(--muted);margin-bottom:10px">Get a message when a lecture is about to start, goes live, or a result is declared.</p><button class="btn y" id="pushb"></button></section>
+  <section class="card" style="max-width:520px"><div class="card-head"><h3>Appearance</h3></div></section>
+  <section class="card" style="max-width:720px" id="devices"><div class="card-head"><div><h3>Active devices</h3></div></div><div id="dv">Loading…</div></section>
+  <section class="card" style="max-width:520px" id="pushc" hidden><div class="card-head"><h3>Notifications on this device</h3></div><button class="btn y" id="pushb"></button></section>
   <section class="card" style="max-width:520px"><button class="btn red" id="lo"><i class="fa-solid fa-right-from-bracket"></i>Log out</button></section>`;
 $('#go').onclick = async () => { const a = $('#p1').value; if (a.length < 8) return $('#m').textContent = 'Use at least 8 characters.'; if (a !== $('#p2').value) return $('#m').textContent = 'The passwords do not match.';
   try { await fn('changeMyPassword', { password: a }); toast('Password updated. Your other devices were signed out.', 'ok'); $('#p1').value = $('#p2').value = ''; $('#m').textContent = ''; devices(); } catch (error) { $('#m').textContent = error.message; } };

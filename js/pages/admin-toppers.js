@@ -3,7 +3,7 @@ import { db, doc, addDoc, setDoc, deleteDoc, rows as qrows, col, query, orderBy 
 import { compressImage, upload, removeFile } from '../core/storage.js';
 import { CONFIG } from '../config.js';
 import { $, esc, modal, toast, empty, skeleton } from '../shared/ui.js';
-const { content } = await mountShell({ role: 'admin', active: 'toppers.html', title: 'Board Results', subtitle: 'Toppers shown on the public website, ranked automatically by marks' });
+const { content } = await mountShell({ role: 'admin', active: 'toppers.html', title: 'Board Results' });
 const LEVELS = { matric: 'Matric (Class 10)', intermediate: 'Intermediate (Class 12)' };
 const photoUrl = p => !p ? '' : /^(https?:|assets\/)/.test(p) ? '../' + p.replace(/^\.\.\//, '') : `https://firebasestorage.googleapis.com/v0/b/${CONFIG.FIREBASE.storageBucket}/o/${encodeURIComponent('site-public/' + p)}?alt=media`;
 content.innerHTML = `<section class="card"><div class="card-head"><h3>Toppers</h3><button class="btn y" id="add"><i class="fa-solid fa-plus"></i>Add topper</button></div><div id="list">${skeleton(4)}</div></section>`;

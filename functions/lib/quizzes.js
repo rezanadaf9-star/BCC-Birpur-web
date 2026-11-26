@@ -9,8 +9,7 @@
 //   quiz_dirty/{quizId}_{uid}             "rebuild the boards" markers, one per submission (no shared hot document)
 const { onCall } = require('firebase-functions/v2/https');
 const { onSchedule } = require('firebase-functions/v2/scheduler');
-const { admin, db, HttpsError, REGION, callOpts, nowIso, int, str, bad, requireSession, audit, notify, classAccess, hotOpts, chunk } = require('./common');
-const FieldValue = admin.firestore.FieldValue;
+const { admin, db, FieldValue, HttpsError, REGION, callOpts, nowIso, int, str, bad, requireSession, audit, notify, classAccess, hotOpts, chunk } = require('./common');
 const GRACE_MS = 15000;
 const r2 = x => Math.round(x * 100) / 100;
 const TYPES = ['Weekly', 'Monthly', 'Chapter-wise'], LANGS = ['both', 'en', 'hi'], OPTS = ['A', 'B', 'C', 'D'];

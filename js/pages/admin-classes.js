@@ -5,7 +5,7 @@ import { fn } from '../shared/api.js';
 import { FEATURES } from '../core/permissions.js';
 import { formModal } from '../shared/forms.js';
 import { $, $$, esc, modal, toast, skeleton } from '../shared/ui.js';
-const { content } = await mountShell({ role: 'admin', active: 'classes.html', title: 'Classes & Features', subtitle: 'Create classes, subjects, feature access and promotion' });
+const { content } = await mountShell({ role: 'admin', active: 'classes.html', title: 'Classes & Features' });
 content.innerHTML = `<section class="card"><div class="card-head"><h3>Classes</h3></div><div id="cls">${skeleton(3)}</div></section><section class="card"><div class="card-head"><h3>Academic session & promotion</h3></div><div id="sess"></div></section>`;
 async function load() {
   const [cls, teachers] = await Promise.all([rows(query(col('classes'), orderBy('sort_order'))), listTeachers()]);
@@ -36,7 +36,7 @@ async function sessions() {
   $('#sess').innerHTML = `<p>Current session: <b>${esc(cur?.label || 'not set')}</b></p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn ghost" id="ns">New session</button><button class="btn y" id="pr">Promote a class</button></div>`;
   $('#ns').onclick = () => formModal({ title: 'New academic session', fields: [{ id: 'label', label: 'Label', placeholder: '2027-28', required: true }, { id: 's', label: 'Starts on', type: 'date', half: true, required: true }, { id: 'e', label: 'Ends on', type: 'date', half: true, required: true }, { id: 'cur', label: 'Make this the current session', type: 'checkbox' }],
     onSubmit: async (v, mm) => { await fn('createAcademicSession', { label: v.label, starts_on: v.s, ends_on: v.e, is_current: !!v.cur }); mm.remove(); sessions(); } });
-  $('#pr').onclick = () => { const opts = (cls || []).map(c => [c.class_no, c.label]), so = (s || []).map(x => [x.id, x.label]); formModal({ title: 'Promote a class', submitLabel: 'Promote', intro: 'Students keep their identity and all old records. New roll numbers follow the previous session\'s academic rank (not quiz rank).', fields: [
+  $('#pr').onclick = () => { const opts = (cls || []).map(c => [c.class_no, c.label]), so = (s || []).map(x => [x.id, x.label]); formModal({ title: 'Promote a class', submitLabel: 'Promote', fields: [
     { id: 'from', label: 'From class', type: 'select', options: opts, half: true }, { id: 'to', label: 'To class', type: 'select', options: opts, half: true },
     { id: 'fs', label: 'From session', type: 'select', options: so, half: true, value: cur?.id }, { id: 'ts', label: 'To session', type: 'select', options: so, half: true }],
     onSubmit: async (v, mm) => { if (v.fs === v.ts) throw new Error('Choose a different new session.'); if (!confirm('Promote this whole class now?')) return; const r = await fn('promoteClass', { from_class: Number(v.from), to_class: Number(v.to), from_session: v.fs, to_session: v.ts }); mm.remove(); toast(`${r.promoted} students promoted.`, 'ok'); load(); } }); };

@@ -3,7 +3,7 @@ import { rows as qrows, one, col, query, where, orderBy, limit, doc, getDoc } fr
 import { fn } from '../shared/api.js';
 import { openViewer, classify } from '../shared/viewer.js';
 import { $, $$, esc, toast, empty, skeleton, fmtDate, fmtIST } from '../shared/ui.js';
-const { me, content } = await mountShell({ role: 'student', active: 'lectures.html', title: 'Lectures', subtitle: 'Recorded and live classes' });
+const { me, content } = await mountShell({ role: 'student', active: 'lectures.html', title: 'Lectures' });
 const P = new URLSearchParams(location.search), subjectId = P.get('subject'), lectureId = P.get('lecture');
 const subs = await qrows(query(col('subjects'), where('class_no', '==', me.student.class_no), orderBy('name')));
 const badge = l => l.live_status === 'live' ? '<span class="tag r">LIVE</span>' : l.live_status === 'scheduled' ? '<span class="tag y">Scheduled</span>' : l.live_status === 'cancelled' ? '<span class="tag">Cancelled</span>' : '';

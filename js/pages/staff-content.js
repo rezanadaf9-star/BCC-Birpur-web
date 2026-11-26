@@ -9,7 +9,7 @@ import { $, $$, esc, toast, empty, skeleton, fmtDate, fmtIST, istInputToIso, iso
 const role = document.documentElement.dataset.role, type = document.documentElement.dataset.type;   // lectures | notes | homework
 const T = { lectures: ['Lectures', 'lectures.html'], notes: ['Notes', 'notes.html'], homework: ['Homework', 'homework.html'] }[type];
 const LINK_OK = { gdrive: /(drive|docs)\.google\.com/i, onedrive: /(onedrive\.live\.com|1drv\.ms|sharepoint\.com|onedrive\.com)/i };
-const { me, content } = await mountShell({ role, active: T[1], title: T[0], subtitle: role === 'admin' ? 'Upload, schedule and manage' : 'Upload for your classes' });
+const { me, content } = await mountShell({ role, active: T[1], title: T[0] });
 const P = new URLSearchParams(location.search), classNo = P.get('class'), subjectId = P.get('subject'), isAdmin = role === 'admin';
 if (!classNo) content.innerHTML = `<section class="card"><div class="card-head"><h3>Select a class</h3></div>${classCards(await myClasses(me), c => `?class=${c.class_no}`)}</section>`;
 else {
@@ -31,7 +31,7 @@ else {
       const rpcStatus = (id, st) => fn('lectureSetStatus', { id, status: st }).then(() => { toast(st === 'live' ? 'Live. Students were notified.' : st === 'cancelled' ? 'Class cancelled. Students were notified.' : 'Done.', 'ok'); load(); }).catch(error => toast(error.message, 'err'));
       $$('[data-live]').forEach(b => b.onclick = () => rpcStatus(b.dataset.live, 'live')); $$('[data-end]').forEach(b => b.onclick = () => rpcStatus(b.dataset.end, 'ended'));
       $$('[data-cx]').forEach(b => b.onclick = () => { if (confirm('Cancel this live class? Students will be told and reminders will stop.')) rpcStatus(b.dataset.cx, 'cancelled'); });
-      $$('[data-rs]').forEach(b => b.onclick = () => { const r = data.find(x => x.id === b.dataset.rs); formModal({ title: 'Change class time', intro: 'Time is in India Standard Time (IST). Students are told about the new time and the 10-minute reminder is set again.', fields: [{ id: 'w', label: 'New date and time (IST)', type: 'datetime-local', value: isoToIstInput(r.scheduled_at), required: true }],
+      $$('[data-rs]').forEach(b => b.onclick = () => { const r = data.find(x => x.id === b.dataset.rs); formModal({ title: 'Change class time', fields: [{ id: 'w', label: 'New date and time (IST)', type: 'datetime-local', value: isoToIstInput(r.scheduled_at), required: true }],
         onSubmit: async (v, mm) => { await fn('lectureReschedule', { id: r.id, when: istInputToIso(v.w) }); mm.remove(); toast('Time updated.', 'ok'); load(); } }); });
       $$('[data-e]').forEach(b => b.onclick = () => edit(data.find(x => x.id === b.dataset.e))); };
 

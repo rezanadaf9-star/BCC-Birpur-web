@@ -1,7 +1,7 @@
 import { mountShell } from '../shared/shell.js';
 import { rows as qrows, col, query, where } from '../core/db.js';
 import { $, esc, empty, skeleton } from '../shared/ui.js';
-const { me, content } = await mountShell({ role: 'student', active: 'timetable.html', title: 'Class Schedule', subtitle: 'Your weekly timetable' });
+const { me, content } = await mountShell({ role: 'student', active: 'timetable.html', title: 'Class Schedule' });
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const data = (await qrows(query(col('class_timetable'), where('class_no', '==', me.student.class_no)))).sort((a, b) => (a.day_of_week - b.day_of_week) || String(a.start_time).localeCompare(b.start_time));
 const today = (new Date().getDay() + 6) % 7 + 1;

@@ -4,7 +4,7 @@ import { fn } from '../shared/api.js';
 import { audienceFor } from '../core/notifications.js';
 import { $, $$, esc, empty, skeleton, toast } from '../shared/ui.js';
 import { ROOT } from '../core/auth.js';
-const { me, content } = await mountShell({ role: 'student', active: 'announcements.html', title: 'Announcements', subtitle: 'Notices and notifications' });
+const { me, content } = await mountShell({ role: 'student', active: 'announcements.html', title: 'Announcements' });
 let tab = 'ann';
 content.innerHTML = `<div style="display:flex;gap:8px"><button class="btn sm" data-t="ann">Announcements</button><button class="btn sm ghost" data-t="not">Notifications</button></div><section class="card" id="v">${skeleton(4)}</section>`;
 const COL = { navy: 'var(--navy)', yellow: 'var(--yellow)', green: 'var(--green)', red: 'var(--red)', blue: 'var(--blue)', orange: 'var(--orange)' };

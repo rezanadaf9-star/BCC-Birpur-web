@@ -39,10 +39,25 @@ service firebase.storage {
       allow update, delete: if false;
     }
 
+    function isSuper15File() {
+      return request.resource.size < 15 * 1024 * 1024
+        && request.resource.contentType in [
+          'application/pdf',
+          'image/jpeg',
+          'image/png',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'application/vnd.ms-excel',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'application/vnd.ms-powerpoint',
+          'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+        ];
+    }
+
     // Super 15 materials: members and staff read; staff upload; server deletes
     match /bcc-content/super15/{file} {
       allow read: if signedIn() && (isAdmin() || request.auth.token.role == 'teacher' || (firestore.exists(/databases/(default)/documents/super15_members/$(request.auth.uid)) && firestore.get(/databases/(default)/documents/super15_members/$(request.auth.uid)).data.is_active == true));
-      allow create: if signedIn() && request.resource.size < 15 * 1024 * 1024 && (isAdmin() || request.auth.token.role == 'teacher');
+      allow create: if signedIn() && isSuper15File() && (isAdmin() || request.auth.token.role == 'teacher');
       allow update, delete: if false;
     }
     // alumni photos: only signed-in users see them; admin manages

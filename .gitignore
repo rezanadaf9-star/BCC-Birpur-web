@@ -36,3 +36,10 @@ serviceAccount*.json
 # Exclude all environment files
 .env*
 **/.env*
+
+# Local development backup files (never deploy)
+*.backup
+*.before-*
+*.bak
+*.old
+*~

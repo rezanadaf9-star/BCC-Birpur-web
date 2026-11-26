@@ -1,3 +1,7 @@
+/* =========================================================
+   WELCOME PAGE: hero slider + mobile menu
+   (the login card logic further down is the original code, unchanged)
+   ========================================================= */
 const slides = [...document.querySelectorAll(".hero-slide")];
 const dots = [...document.querySelectorAll(".dot")];
 let current = 0;
@@ -6,17 +10,13 @@ let timer;
 function showSlide(next) {
   next = (next + slides.length) % slides.length;
   if (next === current) return;
-
   const old = slides[current];
   const incoming = slides[next];
-
   old.classList.remove("active");
   old.classList.add("prev");
   incoming.classList.add("active");
   incoming.classList.remove("prev");
-
   setTimeout(() => old.classList.remove("prev"), 900);
-
   dots.forEach((dot, i) => dot.classList.toggle("active", i === next));
   current = next;
 }
@@ -25,6 +25,7 @@ function nextSlide() { showSlide(current + 1); }
 
 function restartAutoPlay() {
   clearInterval(timer);
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   timer = setInterval(nextSlide, 5000); // 5 seconds
 }
 
@@ -35,58 +36,39 @@ dots.forEach((dot, index) => {
   });
 });
 
-const hero = document.querySelector(".hero");
+// Drag / swipe the hero photos: left = next, right = previous.
+const heroSlides = document.querySelector(".hero-slides");
 let pointerStart = null;
-
-hero.addEventListener("pointerdown", e => {
-  pointerStart = e.clientX;
-  hero.setPointerCapture?.(e.pointerId);
-});
-
-hero.addEventListener("pointerup", e => {
+heroSlides?.addEventListener("pointerdown", e => { pointerStart = e.clientX; });
+heroSlides?.addEventListener("pointerup", e => {
   if (pointerStart === null) return;
   const distance = e.clientX - pointerStart;
   if (Math.abs(distance) > 45) {
-    // Drag/swipe left = next; drag/swipe right = previous.
     showSlide(distance < 0 ? current + 1 : current - 1);
     restartAutoPlay();
   }
   pointerStart = null;
 });
-
-document.querySelectorAll(".portal-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    // All portal buttons intentionally navigate to login.html
-  });
-});
+heroSlides?.addEventListener("pointercancel", () => { pointerStart = null; });
 
 const menu = document.querySelector(".main-nav");
 const toggle = document.querySelector(".menu-toggle");
 toggle?.addEventListener("click", () => {
   const open = menu.classList.toggle("open");
   toggle.setAttribute("aria-expanded", String(open));
+  toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
 });
-
 document.querySelectorAll(".main-nav a").forEach(link => {
   link.addEventListener("click", () => {
     menu.classList.remove("open");
     toggle?.setAttribute("aria-expanded", "false");
   });
 });
-
-restartAutoPlay();
-
-const moreFacultyButton = document.querySelector('.more-faculty');
-const moreFacultyList = document.querySelector('#more-faculty-list');
-moreFacultyButton?.addEventListener('click', () => {
-  const isOpen = moreFacultyButton.getAttribute('aria-expanded') === 'true';
-  moreFacultyButton.setAttribute('aria-expanded', String(!isOpen));
-  if (moreFacultyList) moreFacultyList.hidden = isOpen;
-  const icon = moreFacultyButton.querySelector('i');
-  if (icon) icon.className = isOpen ? 'fa-solid fa-plus' : 'fa-solid fa-minus';
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && menu.classList.contains("open")) { menu.classList.remove("open"); toggle?.setAttribute("aria-expanded", "false"); }
 });
 
-
+restartAutoPlay();
 
 /* =========================================================
    EXTRACTED LIQUID-GLASS LOGIN LOGIC
@@ -547,47 +529,55 @@ window.addEventListener("resize", () => {
 
 
 /* =========================================================
-   PUBLIC SECTION NAVIGATION + RESULTS
+   PUBLIC SECTION NAVIGATION (highlights the current section in the header)
    ========================================================= */
-const publicSections = [...document.querySelectorAll('.public-section[id]')];
 const publicNavLinks = [...document.querySelectorAll('.main-nav a')];
 function setPublicActive(id) {
   publicNavLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + id));
 }
-publicNavLinks.forEach(link => {
-  link.addEventListener('click', function (e) {
-    const id = this.getAttribute('href');
-    if (!id || id === '#login-modal') return;
-    const target = document.querySelector(id);
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setPublicActive(target.id);
-    }
-    menu?.classList.remove('open');
-    toggle?.setAttribute('aria-expanded', 'false');
-  });
-});
-if (publicSections.length) {
+const watched = ['home', 'about', 'facilities', 'results', 'events', 'contact'].map(id => document.getElementById(id)).filter(Boolean);
+if (watched.length && 'IntersectionObserver' in window) {
   const observer = new IntersectionObserver(entries => {
     const visible = entries.filter(x => x.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
     if (visible) setPublicActive(visible.target.id);
-  }, { root: null, rootMargin: '-20% 0px -65% 0px', threshold: [0.15, 0.35, 0.6] });
-  publicSections.forEach(s => observer.observe(s));
-}
-const homeTarget = document.querySelector('#home');
-if (homeTarget) {
-  const homeObserver = new IntersectionObserver(entries => {
-    if (entries[0]?.isIntersecting) setPublicActive('home');
-  }, { root: null, rootMargin: '-10% 0px -70% 0px', threshold: [0.1, 0.4] });
-  homeObserver.observe(homeTarget);
+  }, { root: null, rootMargin: '-25% 0px -60% 0px', threshold: [0, 0.15, 0.4, 0.7] });
+  watched.forEach(s => observer.observe(s));
 }
 
-const matricToppers = [];   // toppers now come from the database (js/pages/guest-content.js)
+/* Results tabs: Matric / Intermediate */
+document.querySelectorAll('.tab[data-tab]').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab[data-tab]').forEach(t => {
+      const on = t === tab;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', String(on));
+    });
+    document.querySelectorAll('.result-panel[data-panel]').forEach(p => { p.hidden = p.dataset.panel !== tab.dataset.tab; });
+  });
+});
+
+/* Gentle reveal on scroll */
+(function () {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) { items.forEach(i => i.classList.add('in')); return; }
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  items.forEach(i => io.observe(i));
+})();
+
+/* Toppers come from the database (js/pages/guest-content.js). */
+const matricToppers = [];
 const intermediateToppers = [];
-function renderToppers(id, data) { const el = document.getElementById(id); if (!el) return; el.innerHTML = data.map((s, i) => { const [name, score, roll, batch, photo, extra] = s; return `<article class="topper-card"><span class="rank-badge">#${i + 1}</span><div class="topper-photo"><img src="${/^(https?:|assets\/)/.test(photo) ? photo : 'assets/' + photo}" alt="${name}" loading="lazy"></div><h4>${name}</h4><div class="score"><i class="fa-solid fa-star"></i>${score} / 500</div><div class="topper-meta">BSEB Roll No: <strong>${roll}</strong></div><div class="batch">BATCH: <strong>${batch}</strong></div>${extra ? `<div class="topper-extra">Topper - ${extra}</div>` : ''}</article>` }).join(''); }
+const escHtml = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function renderToppers(id, data) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = data.map((s, i) => {
+    const [name, score, roll, batch, photo, extra] = s;
+    const src = /^(https?:|assets\/|images\/)/.test(photo) ? photo : 'assets/' + photo;
+    return `<article class="topper-card"><span class="rank-badge">#${i + 1}</span><div class="topper-photo"><img src="${escHtml(src)}" alt="${escHtml(name)}" loading="lazy"></div><h4>${escHtml(name)}</h4><div class="score"><i class="fa-solid fa-star"></i>${escHtml(score)} / 500</div><div class="topper-meta">BSEB Roll No: <strong>${escHtml(roll)}</strong></div><div class="batch">BATCH: <strong>${escHtml(batch)}</strong></div>${extra ? `<div class="topper-extra">Topper - ${escHtml(extra)}</div>` : ''}</article>`;
+  }).join('');
+}
+window.renderToppers = renderToppers;
 window.bccToppersFallback = function () { renderToppers('matricToppers', matricToppers); renderToppers('interToppers', intermediateToppers); };
-// Toppers now come from the database (js/pages/guest-content.js). If that cannot load, the list above is shown after 4 seconds.
+// If the database cannot be reached, the (empty) lists are drawn after 4 seconds.
 window.bccToppersTimer = setTimeout(window.bccToppersFallback, 4000);
-
-

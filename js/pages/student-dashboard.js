@@ -17,7 +17,7 @@ const { me, content, features } = await mountShell({ role: 'student', active: 'd
 const has = k => features.has(k);
 
 content.innerHTML = `
-  <section class="hero"><div><h2>${esc(q[0])}</h2><p>${esc(q[1])}</p></div>
+  <section class="hero"><div><h2>${esc(q[0])}</h2></div>
     <img src="${ROOT}bcc-assets/student-illustration.png" alt=""></section>
   <section class="card" id="learn" style="display:none"><div class="card-head"><h3>Continue learning</h3></div><div class="grid g3" id="learnGrid"></div></section>
   <section class="grid g4" id="stats">${'<div class="card"><div class="skeleton" style="height:46px"></div></div>'.repeat(4)}</section>

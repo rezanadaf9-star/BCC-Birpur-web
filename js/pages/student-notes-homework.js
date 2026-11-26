@@ -3,7 +3,7 @@ import { rows as qrows, col, query, where, orderBy } from '../core/db.js';
 import { openViewer, sourceLabel } from '../shared/viewer.js';
 import { $, $$, esc, toast, empty, skeleton, fmtDate } from '../shared/ui.js';
 const type = document.documentElement.dataset.type, isNotes = type === 'notes';
-const { me, content } = await mountShell({ role: 'student', active: type + '.html', title: isNotes ? 'Notes' : 'Homework', subtitle: isNotes ? 'Subject-wise study notes' : 'Assignments and due dates' });
+const { me, content } = await mountShell({ role: 'student', active: type + '.html', title: isNotes ? 'Notes' : 'Homework' });
 const subs = await qrows(query(col('subjects'), where('class_no', '==', me.student.class_no), orderBy('name')));
 const sel = new URLSearchParams(location.search).get('subject') || subs?.[0]?.id;
 content.innerHTML = `<section class="card"><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">${(subs || []).map(s => `<a class="btn sm ${s.id === sel ? '' : 'ghost'}" href="?subject=${s.id}">${esc(s.name)}</a>`).join('') || '<span style="color:var(--muted)">No subjects yet.</span>'}</div><div id="l">${skeleton(3)}</div></section>`;

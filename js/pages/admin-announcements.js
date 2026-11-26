@@ -4,7 +4,7 @@ import { fn } from '../shared/api.js';
 import { formModal } from '../shared/forms.js';
 import { activeClasses } from '../shared/api.js';
 import { $, $$, esc, toast, empty, skeleton } from '../shared/ui.js';
-const { me, content } = await mountShell({ role: 'admin', active: 'announcements.html', title: 'Announcements', subtitle: 'Notices for students' });
+const { me, content } = await mountShell({ role: 'admin', active: 'announcements.html', title: 'Announcements' });
 content.innerHTML = `<section class="card"><div class="card-head"><h3>Announcements</h3><button class="btn y" id="new"><i class="fa-solid fa-plus"></i>New announcement</button></div><div id="list">${skeleton(3)}</div></section>`;
 const classes = await activeClasses();
 async function load() { const data = await qrows(query(col('announcements'), orderBy('publish_at', 'desc')));

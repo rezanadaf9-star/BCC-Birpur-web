@@ -6,8 +6,7 @@
 //   meetings/{id}/participants/{id}  who joined / left
 const { onCall } = require('firebase-functions/v2/https');
 const { onSchedule } = require('firebase-functions/v2/scheduler');
-const { admin, db, HttpsError, REGION, callOpts, nowIso, int, str, bad, requireSession, audit, notify } = require('./common');
-const FieldValue = admin.firestore.FieldValue;
+const { admin, db, FieldValue, HttpsError, REGION, callOpts, nowIso, int, str, bad, requireSession, audit, notify } = require('./common');
 const KINDS = ['ptm', 'motivational', 'super15'];
 const LINK = { ptm: '/student/ptm.html', motivational: '/student/motivational.html', super15: '/student/super15.html' };
 const istText = iso => new Date(iso).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });

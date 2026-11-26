@@ -3,17 +3,19 @@ import { ROOT } from '../core/auth.js';
 import { pageStudents } from '../data/people.js';
 import { $, esc } from '../shared/ui.js';
 import { myClasses } from '../shared/classes-ui.js';
+import { attendanceEnabled } from '../core/flags.js';
+const ATT = await attendanceEnabled();
 const role = document.documentElement.dataset.role;
 const P = new URLSearchParams(location.search);
 // Links such as print.html?doc=attendance&class=10 go straight to the document.
 if (P.get('doc')) { const d = P.get('doc'); P.delete('doc'); location.replace(`${ROOT}print/${d}.html?${P}`); await new Promise(() => {}); }
 
-const { me, content } = await mountShell({ role, active: 'print.html', title: 'Print Centre', subtitle: 'Report cards, receipts and attendance reports' });
+const { me, content } = await mountShell({ role, active: 'print.html', title: 'Print Centre' });
 const DOCS = [
   ['gradesheet', 'Report card: grade sheets', 'Colour. Print this first for the whole class, then flip the pages and print the covers.', true],
   ['cover', 'Report card: covers', 'Colour. Same student order as the grade sheets, so front and back line up.', true],
   ['receipt', 'Fee receipts', 'Black and white, four per A4 page.', role === 'admin'],
-  ['attendance', 'Attendance notice (one student)', 'For parents of students with poor attendance. Printed for one student at a time.', true],
+  ['attendance', 'Attendance notice (one student)', 'For parents of students with poor attendance. Printed for one student at a time.', ATT],
 ].filter(d => d[3]);
 const cls = await myClasses(me);
 content.innerHTML = `<section class="card" style="max-width:720px"><div class="card-head"><h3>What do you want to print?</h3></div>

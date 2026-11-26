@@ -5,6 +5,8 @@ const users = require('./lib/users');
 const notifications = require('./lib/notifications');
 const classes = require('./lib/classes');
 const attendance = require('./lib/attendance');
+
+const calendarAdmin = require('./lib/calendar-admin');
 const exams = require('./lib/exams');
 const fees = require('./lib/fees');
 const content = require('./lib/content');
@@ -30,6 +32,8 @@ exports.deleteSubject = classes.deleteSubject;
 exports.facultySave = classes.facultySave;
 exports.facultyDelete = classes.facultyDelete;
 for (const k of ['saveClassAttendance','getClassAttendance','attendanceSummary','attendanceMonth','lowAttendance','attendanceNotice']) exports[k] = attendance[k];
+
+for (const k of ['getAttendanceCalendarSettings','saveAttendanceWeeklyRule','saveAttendanceDateOverride','deleteAttendanceDateOverride']) exports[k] = calendarAdmin[k];
 exports.currentSessionId = classes.currentSessionId;
 for (const k of ['createExam','saveExamMarks','correctMarks','declareResult','archiveExam','updateExamFullMarks','getGradesheets','promoteClass','pendingResultPopup','ackResultPopup']) exports[k] = exams[k];
 for (const k of ['saveFeeStructure','deleteFeeStructure','generateInvoices','adjustInvoice','recordFeePayment','getFeeReceipts']) exports[k] = fees[k];

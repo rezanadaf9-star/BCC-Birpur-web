@@ -2,7 +2,7 @@ import { mountShell } from '../shared/shell.js';
 import { rows as qrows, col, query, where, orderBy } from '../core/db.js';
 import { CONFIG } from '../config.js';
 import { esc, empty, skeleton } from '../shared/ui.js';
-const { content } = await mountShell({ role: 'student', active: 'board-results.html', title: 'Board Results', subtitle: 'Our toppers, ranked by marks' });
+const { content } = await mountShell({ role: 'student', active: 'board-results.html', title: 'Board Results' });
 content.innerHTML = skeleton(4);
 const data = await qrows(query(col('site_toppers'), where('is_published', '==', true), orderBy('marks', 'desc')));
 const url = p => !p ? '' : /^(https?:|assets\/)/.test(p) ? '../' + p : `https://firebasestorage.googleapis.com/v0/b/${CONFIG.FIREBASE.storageBucket}/o/${encodeURIComponent('site-public/' + p)}?alt=media`;

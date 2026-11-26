@@ -5,7 +5,7 @@ import { fileBlobUrl } from '../core/storage.js';
 import { isSuper15Member } from '../core/permissions.js';
 import { openMeeting } from '../shared/meeting.js';
 import { $, $$, esc, empty, skeleton, toast, fmtIST } from '../shared/ui.js';
-const { me, content } = await mountShell({ role: 'student', active: 'super15.html', title: 'Super 15', subtitle: 'Live classes, discussion and materials' });
+const { me, content } = await mountShell({ role: 'student', active: 'super15.html', title: 'Super 15' });
 const ok = await isSuper15Member();
 if (!ok) { content.innerHTML = `<section class="card">${empty('fa-lock', 'This section is only for Super 15 batch students.')}</section>`; }
 else {

@@ -1,7 +1,7 @@
 import { mountShell } from '../shared/shell.js';
 import { rows as qrows, col, query, where, orderBy } from '../core/db.js';
 import { $, $$, esc, empty, skeleton } from '../shared/ui.js';
-const { me, content } = await mountShell({ role: 'student', active: 'ai-hub.html', title: 'AI Study Hub', subtitle: 'Study guides and AI helpers chosen by your teachers' });
+const { me, content } = await mountShell({ role: 'student', active: 'ai-hub.html', title: 'AI Study Hub' });
 const TYPES = { notes: ['Notes & summaries', 'fa-file-lines'], lecture: ['Lecture companions', 'fa-circle-play'], doubt: ['Doubt solving', 'fa-circle-question'], ai: ['AI study assistant', 'fa-robot'] };
 let type = 'notes', sub = '';
 const [res, subs] = await Promise.all([qrows(query(col('notebooklm_resources'), where('class_no', '==', me.student.class_no), where('is_active', '==', true), orderBy('created_at', 'desc'))), qrows(query(col('subjects'), where('class_no', '==', me.student.class_no), orderBy('name')))]);

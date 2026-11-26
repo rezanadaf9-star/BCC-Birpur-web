@@ -4,7 +4,7 @@ import { compressImage, upload, removeFile, signed } from '../core/storage.js';
 import { CONFIG } from '../config.js';
 import { formModal } from '../shared/forms.js';
 import { $, $$, esc, toast, empty, skeleton } from '../shared/ui.js';
-const { content } = await mountShell({ role: 'admin', active: 'alumni.html', title: 'Alumni', subtitle: 'Add alumni; categories show automatically on the student side' });
+const { content } = await mountShell({ role: 'admin', active: 'alumni.html', title: 'Alumni' });
 const CATS = ['Achiever', 'Doctor', 'Engineer', 'Civil Services', 'Teacher', 'Entrepreneur', 'Higher Studies', 'Other'];
 content.innerHTML = `<section class="card"><div class="card-head"><h3>Alumni</h3><button class="btn y" id="add"><i class="fa-solid fa-plus"></i>Add alumnus</button></div><div id="list">${skeleton(3)}</div></section>`;
 const urls = {}; const url = p => urls[p] || '';

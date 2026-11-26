@@ -5,7 +5,7 @@ import { myClasses, classCards, label } from '../shared/classes-ui.js';
 import { formModal } from '../shared/forms.js';
 import { $, $$, esc, toast, empty, skeleton } from '../shared/ui.js';
 const role = document.documentElement.dataset.role, isAdmin = role === 'admin';
-const { me, content } = await mountShell({ role, active: 'timetable.html', title: 'Timetable', subtitle: 'Class schedules' });
+const { me, content } = await mountShell({ role, active: 'timetable.html', title: 'Timetable' });
 const classNo = new URLSearchParams(location.search).get('class'), DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 if (!classNo) content.innerHTML = `<section class="card"><div class="card-head"><h3>Select a class</h3></div>${classCards(await myClasses(me), c => `?class=${c.class_no}`)}</section>`;
 else {

@@ -1,7 +1,9 @@
+import { attendanceEnabled } from '../core/flags.js';
 import { start, esc, roman, label, ROOT, getSheets, rows, col, one, P, scope } from './common.js';
 const COND = [['conduct','Conduct'],['public_speaking','Public Speaking'],['homework_completion','Homework Completion'],['effort','Effort for Improvement'],['art','Art Study']];
 const num = v => v == null ? '' : (Math.round(v * 100) / 100).toString();
 await start('Report card · grade sheets', async me => {
+  const ATT = await attendanceEnabled();      // attendance rows on the report card are hidden while attendance is switched off
   const { classNo, student } = scope(me);
   const [sheets, rules, ps] = await Promise.all([getSheets(classNo, P.get('session'), student), rows(col('grade_rules')).then(r => r.sort((a, b) => b.min_pct - a.min_pct)), one('print_settings', 'main')]);
   const rule = pct => (rules || []).find(r => pct >= r.min_pct && pct < r.max_pct);
@@ -28,8 +30,8 @@ await start('Report card · grade sheets', async me => {
           <tr><td class="tt">Total</td>${row(e => `<td class="pl v">${d(e) ? num(e.fm) : ''}</td><td class="pl v">${d(e) ? num(e.om) : ''}</td>`)}</tr>
           <tr><td class="tt">Percentage</td>${row(e => `<td colspan="2" class="pl v">${d(e) ? num(e.pct) + '%' + (e.n > 1 ? `<span class="sub">Overall ${num(e.cum_pct)}%</span>` : '') : ''}</td>`)}</tr>
           <tr><td class="tt">Rank</td>${row(e => `<td colspan="2" class="pl v">${d(e) ? e.rank + (e.n > 1 ? `<span class="sub">Overall ${e.cum_rank}</span>` : '') : ''}</td>`)}</tr>
-          <tr><td class="tt" rowspan="2">Attendance</td>${row(() => '<td class="gr">Present</td><td class="gr">Absent</td>')}</tr>
-          <tr>${row(e => `<td class="v">${d(e) ? e.present : ''}</td><td class="v">${d(e) ? e.absent : ''}</td>`)}</tr>
+          ${ATT ? `<tr><td class="tt" rowspan="2">Attendance</td>${row(() => '<td class="gr">Present</td><td class="gr">Absent</td>')}</tr>
+          <tr>${row(e => `<td class="v">${d(e) ? e.present : ''}</td><td class="v">${d(e) ? e.absent : ''}</td>`)}</tr>` : ''}
           <tr><td class="lb">Grade &amp; Remarks</td>${row(gradeCell)}</tr>
           <tr><td class="lb" style="height:calc(var(--rh) * 1.8)">Guardian Signature</td>${row(() => '<td colspan="2"></td>')}</tr>
         </table>

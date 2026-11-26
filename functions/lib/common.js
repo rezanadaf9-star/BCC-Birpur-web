@@ -2,6 +2,7 @@
 // Shared helpers. Nothing here trusts the client: role, class and session are read from the verified token
 // and re-checked against Firestore where an action is sensitive.
 const admin = require('firebase-admin');
+const { FieldValue } = require('firebase-admin/firestore');
 const { HttpsError } = require('firebase-functions/v2/https');
 
 if (!admin.apps.length) admin.initializeApp();
@@ -130,5 +131,5 @@ async function notify({ classNo = null, userId = null, kind = 'general', title, 
   return true;
 }
 
-module.exports = { admin, db, auth, notify, istToday, classAccess, chunk, throttle, hotOpts, HttpsError, REGION, callOpts, ROLES, SESSION_LIMITS, AUTH_EMAIL_DOMAIN,
+module.exports = { admin, db, auth, FieldValue, notify, istToday, classAccess, chunk, throttle, hotOpts, HttpsError, REGION, callOpts, ROLES, SESSION_LIMITS, AUTH_EMAIL_DOMAIN,
   nowIso, pad2, authEmail, genPassword, str, int, isoDate, bad, claimsFromUser, requireSession, audit, revokeAllSessions, currentSession };

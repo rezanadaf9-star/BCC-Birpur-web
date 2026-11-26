@@ -1,7 +1,7 @@
 import { mountShell } from '../shared/shell.js';
 import { rows as qrows, one, col, query, where, orderBy } from '../core/db.js';
 import { $, $$, esc, empty, skeleton, initials } from '../shared/ui.js';
-const { me, content } = await mountShell({ role: 'student', active: 'quizzes.html', title: 'Quiz Leaderboard', subtitle: 'Latest quiz and cumulative ranking' });
+const { me, content } = await mountShell({ role: 'student', active: 'quizzes.html', title: 'Quiz Leaderboard' });
 const P = new URLSearchParams(location.search); let mode = P.get('quiz') ? 'quiz' : 'cum';
 const qz = await qrows(query(col('quizzes'), where('class_no', '==', me.student.class_no), where('is_active', '==', true), orderBy('created_at', 'desc'))); let qid = P.get('quiz') || qz?.[0]?.id;
 content.innerHTML = `<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn sm" data-m="quiz">Latest quiz</button><button class="btn sm ghost" data-m="cum">Cumulative</button><select class="input" id="qs" style="width:auto;min-height:38px">${(qz || []).map(q => `<option value="${q.id}" ${q.id === qid ? 'selected' : ''}>${esc(q.title)}</option>`).join('')}</select></div><section class="card" id="v">${skeleton(4)}</section>`;

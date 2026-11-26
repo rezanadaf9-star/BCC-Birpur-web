@@ -7,7 +7,7 @@ import { formModal } from '../shared/forms.js';
 import { openMeeting, participantsHtml } from '../shared/meeting.js';
 import { $, $$, esc, toast, empty, skeleton, modal, fmtIST, istInputToIso, isoToIstInput } from '../shared/ui.js';
 const role = document.documentElement.dataset.role, isAdmin = role === 'admin';
-const { me, content } = await mountShell({ role, active: 'meetings.html', title: 'PTM & Meetings', subtitle: 'Schedule or start PTM, motivational sessions and Super 15 classes' });
+const { me, content } = await mountShell({ role, active: 'meetings.html', title: 'PTM & Meetings' });
 const classes = await activeClasses(), KINDS = { ptm: 'PTM', motivational: 'Motivational session', super15: 'Super 15 class' }; let tab = 'now';
 content.innerHTML = `<section class="card"><div class="card-head"><h3>Meetings</h3><button class="btn y" id="new"><i class="fa-solid fa-plus"></i>Schedule or start a meeting</button></div>
   <div style="display:flex;gap:8px;margin-bottom:12px"><button class="btn sm" data-t="now">Live &amp; upcoming</button><button class="btn sm ghost" data-t="old">History</button></div><div id="list">${skeleton(3)}</div></section><div id="stage"></div>`;
@@ -20,7 +20,7 @@ async function load() {
   const by = id => data.find(x => x.id === id), rpc = (name, args, ok) => fn(name, args).then(() => { toast(ok, 'ok'); load(); }).catch(error => toast(error.message, 'err'));
   $$('[data-l]').forEach(b => b.onclick = () => rpc('meetingSetStatus', { id: b.dataset.l, status: 'live' }, 'Live. Invited students were notified.'));
   $$('[data-e]').forEach(b => b.onclick = () => { const m = by(b.dataset.e); if (confirm(m.status === 'live' ? 'End this meeting for everyone?' : 'Cancel this meeting? Invited students will be told.')) rpc('meetingSetStatus', { id: m.id, status: m.status === 'live' ? 'ended' : 'cancelled' }, 'Done.'); });
-  $$('[data-rs]').forEach(b => b.onclick = () => { const m = by(b.dataset.rs); formModal({ title: 'Change meeting time', intro: 'India Standard Time. Invited students are told, and the 10-minute reminder is set again.', fields: [{ id: 'w', label: 'New date and time (IST)', type: 'datetime-local', value: isoToIstInput(m.start_at), required: true }], onSubmit: async (v, mm) => { await fn('meetingReschedule', { id: m.id, when: istInputToIso(v.w) }); mm.remove(); toast('Time changed.', 'ok'); load(); } }); });
+  $$('[data-rs]').forEach(b => b.onclick = () => { const m = by(b.dataset.rs); formModal({ title: 'Change meeting time', fields: [{ id: 'w', label: 'New date and time (IST)', type: 'datetime-local', value: isoToIstInput(m.start_at), required: true }], onSubmit: async (v, mm) => { await fn('meetingReschedule', { id: m.id, when: istInputToIso(v.w) }); mm.remove(); toast('Time changed.', 'ok'); load(); } }); });
   $$('[data-w]').forEach(b => b.onclick = async () => { const m = by(b.dataset.w), md = modal(`<h3>Who joined</h3><p style="color:var(--muted);font-size:13px;margin:4px 0 10px">${esc(m.title)}</p><div id="pl">Loading…</div><button class="btn ghost" data-x style="margin-top:12px">Close</button>`); md.querySelector('[data-x]').onclick = () => md.remove(); md.querySelector('#pl').innerHTML = await participantsHtml(m.id); });
   $$('[data-j]').forEach(b => b.onclick = () => openMeeting({ id: b.dataset.j, host: $('#stage'), name: me.full_name, onClose: load }));
 }

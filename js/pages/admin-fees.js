@@ -6,11 +6,11 @@ import { signed, compressImage, upload, removeFile } from '../core/storage.js';
 import { myClasses, classCards, label } from '../shared/classes-ui.js';
 import { formModal } from '../shared/forms.js';
 import { $, $$, esc, inr, modal, toast, empty, skeleton } from '../shared/ui.js';
-const { me, content } = await mountShell({ role: 'admin', active: 'fees.html', title: 'Fees', subtitle: 'Structure, monthly dues, payments and receipts' });
+const { me, content } = await mountShell({ role: 'admin', active: 'fees.html', title: 'Fees' });
 const P = new URLSearchParams(location.search), classNo = P.get('class'), sess = (await fn('currentSessionId', {})).id;
 let period = P.get('month') || new Date().toISOString().slice(0, 7);
 const settings = await one('fee_settings', 'main');
-const showQR = async () => { const u = await signed(settings?.qr_path, 3600, 'bcc-content'); const m = modal(`<h3>Scan to pay</h3>${u ? `<img src="${u}" alt="UPI QR" style="max-width:300px;margin:12px auto;border-radius:12px">` : '<p style="margin:12px 0">No QR uploaded yet. Upload one in QR settings.</p>'}<p style="text-align:center">${esc(settings?.upi_id || '')}</p><p style="text-align:center;color:var(--muted);font-size:13px">Payment is recorded only after you confirm that the money has arrived.</p><button class="btn" data-x style="margin:12px auto 0;display:flex">Close</button>`); m.querySelector('[data-x]').onclick = () => m.remove(); };
+const showQR = async () => { const u = await signed(settings?.qr_path, 3600, 'bcc-content'); const m = modal(`<h3>Scan to pay</h3>${u ? `<img src="${u}" alt="UPI QR" style="max-width:300px;margin:12px auto;border-radius:12px">` : '<p style="margin:12px 0">No QR uploaded yet. Upload one in QR settings.</p>'}<p style="text-align:center">${esc(settings?.upi_id || '')}</p><button class="btn" data-x style="margin:12px auto 0;display:flex">Close</button>`); m.querySelector('[data-x]').onclick = () => m.remove(); };
 
 if (!classNo) {
   content.innerHTML = `<section class="card"><div class="card-head"><h3>Select a class</h3><button class="btn ghost" id="qr"><i class="fa-solid fa-qrcode"></i>UPI QR & payment note</button></div><div id="c"></div></section>`;

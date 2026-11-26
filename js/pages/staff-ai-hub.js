@@ -4,7 +4,7 @@ import { myClasses, classCards, label } from '../shared/classes-ui.js';
 import { formModal } from '../shared/forms.js';
 import { $, $$, esc, toast, empty, skeleton } from '../shared/ui.js';
 const role = document.documentElement.dataset.role, isAdmin = role === 'admin';
-const { me, content } = await mountShell({ role, active: 'ai-hub.html', title: 'AI Study Hub', subtitle: 'Study guides, NotebookLM / Gemini links for each class' });
+const { me, content } = await mountShell({ role, active: 'ai-hub.html', title: 'AI Study Hub' });
 const classNo = new URLSearchParams(location.search).get('class'), TYPES = { notes: 'Notes & summaries', lecture: 'Lecture companions', doubt: 'Doubt solving', ai: 'AI study assistant' };
 if (!classNo) content.innerHTML = `<section class="card"><div class="card-head"><h3>Select a class</h3></div>${classCards(await myClasses(me), c => `?class=${c.class_no}`)}</section>`;
 else {

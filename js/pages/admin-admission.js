@@ -6,7 +6,7 @@ import { formModal } from '../shared/forms.js';
 import { showCredentials } from '../shared/credentials.js';
 import { label } from '../core/classes.js';
 import { $, $$, esc, initials, toast, empty, skeleton } from '../shared/ui.js';
-const { content } = await mountShell({ role: 'admin', active: 'admission.html', title: 'Admission', subtitle: 'Admission register and new admissions' });
+const { content } = await mountShell({ role: 'admin', active: 'admission.html', title: 'Admission' });
 const classes = await activeClasses();
 content.innerHTML = `<section class="grid g4" id="sum"></section>
   <section class="card"><div class="card-head"><h3>Admission register</h3><button class="btn y" id="go"><i class="fa-solid fa-user-plus"></i>Admit new student</button></div>
