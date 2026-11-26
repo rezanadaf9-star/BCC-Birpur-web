@@ -1,12 +1,25 @@
 import * as FB from './firebase-client.js';
 import { ref, getBlob, getDownloadURL, uploadBytes, uploadBytesResumable, deleteObject } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js';
 const urls = new Map();
+const pendingUrls = new Map();
+
 /** Small private images (photos) are shown through download URLs. Bucket names are folders inside Firebase Storage. */
 export async function signed(path, seconds = 3600, bucket = 'bcc-content') {
   if (!path) return null;
-  const k = bucket + '/' + path, hit = urls.get(k); if (hit && hit.exp > Date.now()) return hit.url;
-  try { const url = await getDownloadURL(ref(FB.storage, k)); urls.set(k, { url, exp: Date.now() + Math.max(60, seconds - 60) * 1000 }); return url; } catch { return null; }
+  const k = bucket + '/' + path, hit = urls.get(k);
+  if (hit && hit.exp > Date.now()) return hit.url;
+  if (pendingUrls.has(k)) return pendingUrls.get(k);
+  const request = getDownloadURL(ref(FB.storage, k))
+    .then(url => {
+      urls.set(k, { url, exp: Date.now() + Math.max(60, seconds - 60) * 1000 });
+      return url;
+    })
+    .catch(() => null)
+    .finally(() => pendingUrls.delete(k));
+  pendingUrls.set(k, request);
+  return request;
 }
+
 /** Compress an image in the browser before upload (max 800px, JPEG). */
 export function compressImage(file, max = 800, quality = .82) {
   return new Promise((res, rej) => { const img = new Image(); img.onload = () => {
